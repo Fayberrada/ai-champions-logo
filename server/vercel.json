@@ -1,0 +1,6 @@
+{
+  "redirects": [
+    { "source": "/", "destination": "https://fayberrada.github.io/ai-champions-logo/", "permanent": false },
+    { "source": "/organisateur", "destination": "https://fayberrada.github.io/ai-champions-logo/catalogue.html", "permanent": false }
+  ]
+}
