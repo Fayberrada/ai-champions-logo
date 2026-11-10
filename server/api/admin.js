@@ -1,5 +1,5 @@
 import { timingSafeEqual } from "node:crypto";
-import { cors, body, allProposals, deleteProposal } from "../lib/shared.js";
+import { cors, body, allProposals, deleteProposal, allGames, validIds, pseudoKey } from "../lib/shared.js";
 
 // POST { key, action: "list" | "delete", id }
 // Réservé à l'organisateur (clé ADMIN_KEY dans les variables d'environnement Vercel).
@@ -21,7 +21,23 @@ export default async function handler(req, res) {
       await deleteProposal(id);
     }
     const list = (await allProposals()).map((p) => ({ id: p.id, name: p.name, by: p.by, at: p.at }));
-    return res.status(200).json({ proposals: list });
+    // Profils : une ligne par pseudo ayant joué ou proposé
+    const ids = await validIds();
+    const profiles = new Map();
+    const get = (pseudo) => {
+      const k = pseudoKey(pseudo);
+      if (!profiles.has(k)) profiles.set(k, { pseudo, playedAt: null, duels: 0, retired: 0, champion: null, proposals: [] });
+      return profiles.get(k);
+    };
+    for (const g of await allGames()) {
+      const p = get(g.pseudo);
+      p.playedAt = g.at;
+      p.champion = g.champion ?? null;
+      for (const [a, x] of g.duels || []) (ids.has(a) && ids.has(x) ? p.duels++ : p.retired++);
+    }
+    for (const pr of list) get(pr.by).proposals.push({ id: pr.id, name: pr.name });
+    const players = [...profiles.values()].sort((a, b) => String(b.playedAt || "").localeCompare(String(a.playedAt || "")));
+    return res.status(200).json({ proposals: list, players });
   } catch (e) {
     return res.status(500).json({ error: "Action impossible pour le moment" });
   }
