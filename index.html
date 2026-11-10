@@ -3,100 +3,65 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>AI Champions LCL</title>
-  <meta name="description" content="Tournoi pour élire le logo des AI Champions LCL.">
+  <title>Champions IA LCL</title>
+  <meta name="description" content="Le tournoi pour élire l'identité des Champions IA LCL.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Bungee&family=Cinzel:wght@700;900&family=Fredoka:wght@600;700&family=Graduate&family=Montserrat:wght@500;600;700;800&family=Orbitron:wght@700;900&family=Pacifico&family=Permanent+Marker&family=Playfair+Display:ital,wght@0,700;0,900;1,900&family=Press+Start+2P&family=Shrikhand&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <header class="top">
     <div class="wrap">
-      <div class="brand"><span class="brand-mark" aria-hidden="true">✦</span> AI Champions <span class="brand-lcl">LCL</span></div>
-      <nav aria-label="Sections">
-        <button type="button" class="tab is-active" data-tab="jeu" aria-pressed="true">Le tournoi</button>
-        <button type="button" class="tab" data-tab="catalogue" aria-pressed="false">Les logos</button>
-        <button type="button" class="tab" data-tab="classement" aria-pressed="false">Classement</button>
-      </nav>
+      <div class="brand"><span class="chev" aria-hidden="true">&gt;</span><span class="i" aria-hidden="true">i</span> Champions <span class="pill">IA</span> <span class="lcl">LCL</span></div>
+      <div class="who" id="who" hidden></div>
     </div>
   </header>
 
   <main class="wrap">
-    <!-- ====== JEU ====== -->
-    <section id="jeu" class="view is-active" aria-label="Tournoi">
-
-      <div id="intro-box" class="hero">
-        <p class="kicker">Tournoi officiel</p>
-        <h1>Élisez le logo des <span class="hl">AI Champions</span> LCL</h1>
-        <p class="lead">Des duels à élimination directe. À chaque duel, gardez le logo qui représente le mieux la communauté. À la fin : un champion et le top 5.</p>
-        <div class="modes">
-          <button type="button" class="mode" data-size="16">
-            <span class="mode-title">Partie rapide</span>
-            <span class="mode-sub">16 logos · 17 duels · ~2 min</span>
-          </button>
-          <button type="button" class="mode primary" data-size="32">
-            <span class="mode-title">Grand tournoi</span>
-            <span class="mode-sub">32 logos · 33 duels · ~4 min</span>
-          </button>
+    <!-- Accueil : pseudo -->
+    <section id="home" class="panel hero">
+      <p class="kicker">Le grand tournoi</p>
+      <h1>Choisissez l'identité des <span class="hl">Champions IA</span></h1>
+      <p class="lead">15 duels, un seul gagnant. À chaque duel, gardez la proposition que vous préférez. À la fin, découvrez votre champion et le top 5 de tous les joueurs.</p>
+      <form id="pseudo-form" class="pseudo" autocomplete="off">
+        <label for="pseudo">Votre pseudo</label>
+        <div class="row">
+          <input id="pseudo" name="pseudo" type="text" minlength="2" maxlength="24" required placeholder="Ex. Data_Ninja" spellcheck="false">
+          <button type="submit" class="btn primary big">Jouer ▶</button>
         </div>
-        <ol class="steps">
-          <li><strong>Phase finale</strong> : 16<sup>es</sup> ou 8<sup>es</sup>, quarts, demies.</li>
-          <li><strong>Match pour la 5<sup>e</sup> place</strong> entre les quarts de finalistes éliminés.</li>
-          <li><strong>Petite finale</strong> pour la 3<sup>e</sup> place, puis la <strong>grande finale</strong>.</li>
-        </ol>
-        <p class="hint">Au clavier : <kbd>←</kbd> / <kbd>→</kbd> ou <kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd> <kbd>4</kbd>.</p>
-      </div>
-
-      <div id="round-box" class="arena" hidden>
-        <div class="arena-head">
-          <div>
-            <p class="stage" id="stage"></p>
-            <p class="match" id="match-label"></p>
-          </div>
-          <button type="button" class="btn ghost" id="quit-btn">Abandonner</button>
-        </div>
-        <div class="progress" aria-hidden="true"><div class="bar" id="bar"></div></div>
-        <p class="prompt" id="prompt"></p>
-        <div class="options" id="options"></div>
-      </div>
-
-      <div id="winner-box" class="results" hidden>
-        <div class="confetti" id="confetti" aria-hidden="true"></div>
-        <p class="kicker">Votre champion</p>
-        <div class="champion">
-          <div class="crown" aria-hidden="true">👑</div>
-          <div class="champion-logo" id="champion"></div>
-          <p class="champion-name" id="champion-name"></p>
-        </div>
-        <h2>Votre top 5</h2>
-        <ol class="top5" id="top5"></ol>
-        <div class="actions">
-          <button type="button" class="btn primary" id="again-btn">Rejouer</button>
-          <button type="button" class="btn" id="copy-btn">Copier mon top 5</button>
-          <button type="button" class="btn" id="download-btn">Télécharger le logo gagnant (SVG)</button>
-        </div>
-        <p class="status" id="status" aria-live="polite"></p>
-      </div>
+        <p class="hint" id="pseudo-hint">Seule votre dernière partie compte dans le classement commun.</p>
+      </form>
     </section>
 
-    <!-- ====== CATALOGUE ====== -->
-    <section id="catalogue" class="view" aria-label="Les logos en compétition">
-      <h2 class="section-title">Les <span id="count"></span> logos en compétition</h2>
-      <div class="filters" id="filters"></div>
-      <div class="grid" id="grid"></div>
+    <!-- Duels -->
+    <section id="arena" hidden>
+      <div class="arena-head">
+        <div>
+          <p class="stage" id="stage"></p>
+          <p class="match" id="match"></p>
+        </div>
+        <button type="button" class="btn ghost" id="quit">Quitter</button>
+      </div>
+      <div class="progress" aria-hidden="true"><div class="bar" id="bar"></div></div>
+      <p class="prompt" id="prompt">Laquelle préférez-vous ?</p>
+      <div class="duel" id="duel"></div>
+      <p class="hint center">Clavier : <kbd>←</kbd> ou <kbd>→</kbd></p>
     </section>
 
-    <!-- ====== CLASSEMENT ====== -->
-    <section id="classement" class="view" aria-label="Classement cumulé">
-      <h2 class="section-title">Classement cumulé</h2>
-      <p class="lead small">Points par partie : 1<sup>er</sup> = 10, 2<sup>e</sup> = 7, 3<sup>e</sup> = 5, 4<sup>e</sup> = 3, 5<sup>e</sup> = 1. <span id="games-count"></span></p>
-      <ol class="leader" id="leader"></ol>
+    <!-- Résultats -->
+    <section id="results" class="panel results" hidden>
+      <div class="confetti" id="confetti" aria-hidden="true"></div>
+      <p class="kicker">Votre champion</p>
+      <div class="champion"><div class="crown" aria-hidden="true">👑</div><div class="champion-logo" id="champion"></div></div>
+
+      <h2>Top 5 de tous les joueurs</h2>
+      <p class="sub" id="stats" aria-live="polite">Chargement du classement…</p>
+      <ol class="top5" id="top5"></ol>
       <div class="actions">
-        <button type="button" class="btn" id="export-btn">Exporter les résultats (JSON)</button>
-        <button type="button" class="btn ghost" id="reset-btn">Effacer l'historique</button>
+        <button type="button" class="btn primary" id="again">Rejouer</button>
+        <button type="button" class="btn" id="retry" hidden>Réessayer l'envoi</button>
       </div>
-      <p class="hint">Les parties sont enregistrées dans ce navigateur. Pour consolider les votes d'une équipe, chacun peut copier son top 5 ou exporter le JSON.</p>
     </section>
   </main>
 

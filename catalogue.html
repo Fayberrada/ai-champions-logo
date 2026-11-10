@@ -1,0 +1,9 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex">
+<title>Catalogue organisateur</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Bungee&family=Cinzel:wght@700;900&family=Fredoka:wght@600;700&family=Graduate&family=Montserrat:wght@500;600;700;800&family=Orbitron:wght@700;900&family=Pacifico&family=Permanent+Marker&family=Playfair+Display:ital,wght@0,700;0,900;1,900&family=Press+Start+2P&family=Shrikhand&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>body{margin:0;background:#EEF0FB;color:#0B1446;font:16px/1.5 Montserrat,Arial,sans-serif}main{max-width:1100px;margin:0 auto;padding:24px 16px}
+.g{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px}figure{margin:0;background:#fff;border-radius:22px;overflow:hidden;box-shadow:0 6px 20px rgba(11,20,70,.1)}
+svg{display:block;width:100%;height:auto}figcaption{padding:8px 12px;font-weight:700;font-size:.9rem}figcaption span{display:block;font-weight:500;color:#59628A;font-size:.78rem}</style></head>
+<body><main><h1>Catalogue organisateur — Champions IA</h1><p>Page non liée depuis le jeu : les joueurs ne la voient pas.</p><div class="g" id="g"></div></main>
+<script src="logos.js"></script><script>document.getElementById('g').innerHTML=LOGOS.map(l=>'<figure><svg viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg">'+l.svg+'</svg><figcaption>#'+l.id+' '+l.name+'<span>'+l.style+'</span></figcaption></figure>').join('')</script></body></html>
