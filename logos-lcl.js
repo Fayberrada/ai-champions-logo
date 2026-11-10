@@ -44,7 +44,7 @@ const LOGOS_LCL = (function () {
   const clip = (id) => `<clipPath id="${id}"><rect width="240" height="240" rx="28"/></clipPath>`;
 
   const L = [];
-  const add = (name, style, svg) => L.push({ id: 33 + L.length, name, style, svg, serie: "Charte LCL" });
+  const add = (name, style, svg) => L.push({ id: 33 + L.length, name, style, svg, serie: L.length < 24 ? "Charte LCL" : "Héritage" });
 
   // 33 — Carré de marque
   add("Carré de marque", "Signature LCL", frame(I) + motif(124, 80, 46) + wm(150) +
@@ -229,6 +229,76 @@ const LOGOS_LCL = (function () {
     `<path d="M48 142C90 130 150 128 196 136" fill="none" stroke="${Y}" stroke-width="5" stroke-linecap="round"/>` +
     `<rect x="98" y="156" width="44" height="22" rx="11" fill="${Y}"/>` + txt(120, 172, "IA", { size: 14, fill: I }) +
     txt(120, 210, "LCL", { weight: 600, size: 12, fill: Y, ls: 8 }));
+
+  // ---------- Série « Héritage » : clins d'œil aux anciens logos Crédit Lyonnais / LCL ----------
+  // Inspirations (sans copie) : l'emblème carré jaune et bleu aux quatre flèches convergeant vers un cercle,
+  // lu comme un soleil sur le Rhône (avant 2005) ; les doubles filets autour du nom ; le croissant argenté
+  // et le lettrage aux angles arrondis du logo de 2005 ; Lyon, ville d'origine (1863).
+  const SILVER = (id) => `<linearGradient id="${id}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F4F6FB"/><stop offset=".45" stop-color="#B9C0D3"/><stop offset=".55" stop-color="#8E97B0"/><stop offset="1" stop-color="#E3E7F1"/></linearGradient>`;
+  // Emblème carré à quatre flèches (x, y = coin haut gauche, w = côté)
+  function arrows(x, y, w, sq = Y, ar = I, core) {
+    const k = w / 120, cx = x + w / 2, cy = y + w / 2, P = (a, b) => `${f1(x + a * k)},${f1(y + b * k)}`;
+    return `<rect x="${x}" y="${y}" width="${w}" height="${w}" fill="${sq}"/>` +
+      `<g fill="${ar}"><polygon points="${P(34, 8)} ${P(86, 8)} ${P(60, 42)}"/><polygon points="${P(112, 34)} ${P(112, 86)} ${P(78, 60)}"/>` +
+      `<polygon points="${P(34, 112)} ${P(86, 112)} ${P(60, 78)}"/><polygon points="${P(8, 34)} ${P(8, 86)} ${P(42, 60)}"/></g>` +
+      `<circle cx="${f1(cx)}" cy="${f1(cy)}" r="${f1(13 * k)}" fill="${core || ar}"/>`;
+  }
+
+  // 57 — Quatre flèches
+  add("Quatre flèches", "Héritage · emblème carré", frame(W) + arrows(60, 22, 120) + motif(121, 82, 13, Y, W) +
+    `<line x1="32" y1="160" x2="208" y2="160" stroke="${I}" stroke-width="2"/><line x1="32" y1="194" x2="208" y2="194" stroke="${I}" stroke-width="2"/>` +
+    txt(120, 184, "CHAMPIONS IA", { size: 19, fill: I, len: 170 }) + txt(120, 216, "LCL", { weight: 700, size: 12, fill: B1, ls: 8 }));
+
+  // 58 — Soleil sur le Rhône
+  add("Soleil sur le Rhône", "Héritage · paysage", `<defs>${clip("L58c")}<clipPath id="L58s"><rect x="0" y="0" width="240" height="106"/></clipPath></defs>` +
+    `<g clip-path="url(#L58c)"><rect width="240" height="240" fill="${I}"/><g clip-path="url(#L58s)"><circle cx="120" cy="106" r="54" fill="${Y}"/></g>` +
+    [[112, B2, 6], [124, B3, 4], [134, LB, 3], [143, B2, 2]].map(([y, c, w]) =>
+      `<path d="M0 ${y}C30 ${y - 5} 50 ${y + 5} 80 ${y}S130 ${y - 5} 160 ${y}S210 ${y + 5} 240 ${y}" fill="none" stroke="${c}" stroke-width="${w}"/>`).join("") + `</g>` +
+    motif(124, 80, 26, I, I) + wm(186));
+
+  // 59 — Croissant argenté
+  add("Croissant argenté", "Héritage 2005", `<defs>${SILVER("L59g")}</defs>` + frame("#161C63") +
+    `<path d="M26 166C40 56 168 14 220 104C176 58 70 70 26 166Z" fill="url(#L59g)"/><path d="M26 166C46 92 120 60 180 70C118 78 62 112 26 166Z" fill="${B2}" fill-opacity=".55"/>` +
+    txt(120, 146, "CHAMPIONS", { size: 28, fill: Y, len: 186 }) +
+    `<rect x="96" y="160" width="48" height="24" rx="12" fill="none" stroke="${Y}" stroke-width="2.5"/>` + txt(120, 178, "IA", { size: 15, fill: Y }) +
+    txt(120, 212, "LCL", { weight: 600, size: 12, fill: W, ls: 8 }));
+
+  // 60 — Lettrage arrondi
+  add("Lettrage arrondi", "Héritage · lettrage", frame(I) +
+    `<path d="M62 36H90V128L78 140H76A14 14 0 0 1 62 126Z" fill="${Y}"/>` +
+    `<path d="M104 140L132 36H156L184 140H158L152 118H136L130 140Z" fill="${Y}"/><path d="M140 100H148L144 82Z" fill="${I}"/>` +
+    txt(120, 178, "CHAMPIONS", { size: 22, fill: W, len: 176 }) + txt(120, 206, "LCL", { weight: 600, size: 12, fill: Y, ls: 8 }));
+
+  // 61 — Monogramme C·L
+  add("Monogramme C·L", "Héritage · monogramme", frame(Y) +
+    `<path d="M141.5 56.5A46 46 0 1 0 141.5 121.5" fill="none" stroke="${I}" stroke-width="20"/>` +
+    `<path d="M128 58H148V112H184V132H128Z" fill="${W}" stroke="${I}" stroke-width="4" stroke-linejoin="round"/>` +
+    sparkle(178, 56, 12, I) +
+    `<line x1="36" y1="158" x2="204" y2="158" stroke="${I}" stroke-width="2"/>` + txt(120, 186, "CHAMPIONS IA", { size: 19, fill: I, len: 170 }) +
+    txt(120, 212, "LCL", { weight: 700, size: 12, fill: I, ls: 8 }));
+
+  // 62 — Double filet
+  add("Double filet", "Héritage · corporate 80s", frame(W) + arrows(22, 86, 64) +
+    `<line x1="98" y1="88" x2="218" y2="88" stroke="${B1}" stroke-width="2"/><line x1="98" y1="148" x2="218" y2="148" stroke="${B1}" stroke-width="2"/>` +
+    txt(98, 114, "CHAMPIONS", { anchor: "start", weight: 700, size: 18, fill: B1, len: 120 }) +
+    txt(98, 136, "IA · LCL", { anchor: "start", weight: 600, size: 13, fill: B1, ls: 3 }) +
+    txt(120, 196, "L'intelligence artificielle, ensemble", { weight: 500, size: 9.5, fill: G }));
+
+  // 63 — Héritage 1863
+  add("Depuis 1863", "Héritage · médaille", `<defs><path id="L63t" d="M54 120A66 66 0 0 1 186 120"/><path id="L63b" d="M46 120A74 74 0 0 0 194 120"/></defs>` + frame("#F4EFE2") +
+    `<circle cx="120" cy="120" r="98" fill="${I}"/><circle cx="120" cy="120" r="90" fill="none" stroke="${Y}" stroke-width="2"/><circle cx="120" cy="120" r="56" fill="none" stroke="${Y}" stroke-width="1.5"/>` +
+    `<text font-family="${M}" font-weight="800" font-size="16" fill="${W}" letter-spacing="3" text-anchor="middle"><textPath href="#L63t" startOffset="50%">CHAMPIONS IA</textPath></text>` +
+    `<text font-family="${M}" font-weight="700" font-size="11" fill="${Y}" letter-spacing="3" text-anchor="middle"><textPath href="#L63b" startOffset="50%">LCL · HÉRITAGE 1863</textPath></text>` +
+    arrows(92, 92, 56) + star(46, 126, 5, 2, Y) + star(194, 126, 5, 2, Y));
+
+  // 64 — Lion de Lyon
+  add("Lion de Lyon", "Héritage · mascotte", frame(I) +
+    star(120, 90, 66, 50, Y, 14) +
+    `<circle cx="94" cy="62" r="10" fill="#E0B800"/><circle cx="146" cy="62" r="10" fill="#E0B800"/>` +
+    `<polygon points="120,52 150,68 152,102 136,128 104,128 88,102 90,68" fill="#FFE680"/>` +
+    `<path d="M100 88Q107 82 114 88M126 88Q133 82 140 88" fill="none" stroke="${I}" stroke-width="4" stroke-linecap="round"/>` +
+    `<polygon points="111,102 129,102 120,113" fill="${I}"/><path d="M120 113V120M120 120Q112 126 106 121M120 120Q128 126 134 121" fill="none" stroke="${I}" stroke-width="3" stroke-linecap="round"/>` +
+    wm(190));
 
   return L;
 })();
