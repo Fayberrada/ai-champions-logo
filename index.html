@@ -23,7 +23,7 @@
     <section id="home" class="panel hero">
       <p class="kicker">Le grand tournoi</p>
       <h1>Choisissez l'identité des <span class="hl">Champions IA</span></h1>
-      <p class="lead">20 logos en compétition, 15 duels par partie, un seul gagnant. À chaque duel, gardez la proposition que vous préférez. À la fin, découvrez votre champion et le top 5 de tous les joueurs.</p>
+      <p class="lead">Tous les logos en compétition passent devant vous. Le jeu apprend vos goûts et vous oppose ensuite des styles proches pour départager vos préférences. À chaque duel, gardez la proposition que vous préférez. À la fin, découvrez votre champion et le top 5 de tous les joueurs.</p>
       <form id="pseudo-form" class="pseudo" autocomplete="off">
         <label for="pseudo">Votre pseudo</label>
         <div class="row">
@@ -83,7 +83,13 @@
       <div class="confetti" id="confetti" aria-hidden="true"></div>
       <p class="kicker">Votre champion</p>
       <div class="champion"><div class="crown" aria-hidden="true">👑</div><div class="champion-logo" id="champion"></div></div>
+      <p class="taste" id="taste"></p>
       <div class="mine" id="mine" aria-live="polite"></div>
+      <div id="similar-box" hidden>
+        <h2>Proches de vos goûts</h2>
+        <p class="sub">D'après vos choix, ces logos devraient aussi vous plaire.</p>
+        <ul class="similar" id="similar"></ul>
+      </div>
 
       <h2>Top 5 sur l'ensemble des votes</h2>
       <p class="sub" id="stats" aria-live="polite">Chargement du classement…</p>

@@ -302,3 +302,45 @@ const LOGOS_LCL = (function () {
 
   return L;
 })();
+
+// Étiquettes de style : servent à apprendre les goûts du joueur et à proposer des duels entre logos proches.
+const TAG_LABELS = {
+  "fond-indigo": "Fond indigo", "fond-clair": "Fond clair", "fond-jaune": "Fond jaune", "fond-sombre": "Fond sombre", "fond-degrade": "Dégradés",
+  emblem: "Emblèmes et badges", typo: "Typographie", illus: "Illustrations", picto: "Pictogrammes", mascotte: "Mascottes", geo: "Formes géométriques",
+  sobre: "Sobre", moderne: "Moderne", ludique: "Ludique", heritage: "Héritage LCL", motif: "Motif >i",
+};
+const LOGO_TAGS = {
+  33: ["fond-indigo", "typo", "sobre", "motif"],
+  34: ["fond-indigo", "typo", "sobre"],
+  35: ["fond-clair", "emblem", "sobre", "motif"],
+  36: ["fond-jaune", "geo", "moderne", "motif"],
+  37: ["fond-indigo", "illus", "geo", "moderne", "motif"],
+  38: ["fond-clair", "picto", "moderne", "motif"],
+  39: ["fond-indigo", "geo", "moderne", "motif"],
+  40: ["fond-indigo", "illus", "ludique", "motif"],
+  41: ["fond-clair", "picto", "moderne", "motif"],
+  42: ["fond-indigo", "picto", "ludique", "motif"],
+  43: ["fond-sombre", "typo", "ludique", "motif"],
+  44: ["fond-indigo", "picto", "ludique", "motif"],
+  45: ["fond-clair", "typo", "moderne", "motif"],
+  46: ["fond-indigo", "geo", "moderne", "motif"],
+  47: ["fond-indigo", "illus", "moderne", "motif"],
+  48: ["fond-degrade", "geo", "moderne", "motif"],
+  49: ["fond-clair", "emblem", "sobre", "motif"],
+  50: ["fond-indigo", "geo", "moderne", "motif"],
+  51: ["fond-clair", "emblem", "ludique"],
+  52: ["fond-indigo", "picto", "sobre"],
+  53: ["fond-clair", "mascotte", "ludique"],
+  54: ["fond-indigo", "emblem", "sobre"],
+  55: ["fond-clair", "geo", "moderne"],
+  56: ["fond-indigo", "typo", "ludique"],
+  57: ["fond-clair", "emblem", "heritage", "sobre", "motif"],
+  58: ["fond-indigo", "illus", "heritage", "motif"],
+  59: ["fond-sombre", "typo", "heritage"],
+  60: ["fond-indigo", "typo", "heritage", "sobre"],
+  61: ["fond-jaune", "emblem", "heritage"],
+  62: ["fond-clair", "emblem", "heritage", "sobre"],
+  63: ["fond-clair", "emblem", "heritage"],
+  64: ["fond-indigo", "mascotte", "heritage", "ludique"],
+};
+LOGOS_LCL.forEach((l) => (l.tags = LOGO_TAGS[l.id] || []));

@@ -11,7 +11,7 @@ export default async function handler(req, res) {
   const pseudo = cleanText(b.pseudo, 24);
   if (pseudo.length < 2) return res.status(400).json({ error: "Pseudo de 2 à 24 caractères" });
   const duels = Array.isArray(b.duels) ? b.duels : [];
-  if (duels.length < 1 || duels.length > 40) return res.status(400).json({ error: "Partie invalide" });
+  if (duels.length < 1 || duels.length > 120) return res.status(400).json({ error: "Partie invalide" });
 
   try {
     const ids = await validIds();

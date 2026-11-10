@@ -2,9 +2,7 @@
   "use strict";
 
   const API = "https://champions-ia-api.vercel.app/api";
-  const SIZE = 16; // propositions par partie → 15 duels
   const PSEUDO_KEY = "champions-ia-pseudo";
-  const STAGES = { 16: "Huitièmes de finale", 8: "Quarts de finale", 4: "Demi-finales", 2: "🏆 Finale" };
 
   const $ = (s) => document.querySelector(s);
   const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
@@ -183,15 +181,49 @@
   $("#results-propose").addEventListener("click", () => { backTo = "results"; setStatus(""); show("propose"); });
 
   // ---------- Tournoi ----------
+  // 1) Découverte : tous les logos en compétition passent une fois, par paires tirées au hasard.
+  // 2) Affinage : les gagnants s'affrontent par paires de styles proches, pour départager vos préférences.
+  //    Après la découverte, si le nombre de qualifiés est impair, le logo éliminé le plus proche de vos goûts est repêché.
+  // Le goût du joueur est appris à chaque duel à partir des étiquettes de style des logos (LOGO_TAGS).
   let g = null;
   let busy = false;
 
-  // Les propositions les moins vues passent en priorité, et celles des joueurs encore plus,
-  // pour que chacune soit jugée rapidement.
-  function pickPool() {
-    const all = [...items.keys()];
-    const weight = (id) => (played[id] || 0) + Math.random() * 4 - (items.get(id).img ? 6 : 0);
-    return shuffle(all.map((id) => [id, weight(id)]).sort((a, b) => a[1] - b[1]).slice(0, SIZE).map((x) => x[0]));
+  const tagsOf = (id) => (items.get(id) && items.get(id).tags) || [];
+  function similarity(a, b) {
+    const A = tagsOf(a), B = tagsOf(b);
+    if (!A.length || !B.length) return 0;
+    const inter = A.filter((t) => B.includes(t)).length;
+    return inter / (A.length + B.length - inter);
+  }
+  function tasteScore(id) {
+    const t = tagsOf(id);
+    if (!t.length) return 0;
+    return t.reduce((s, k) => s + (g.taste[k] || 0), 0) / Math.sqrt(t.length);
+  }
+  function learn(w, l) {
+    tagsOf(w).forEach((k) => (g.taste[k] = (g.taste[k] || 0) + 1));
+    tagsOf(l).forEach((k) => (g.taste[k] = (g.taste[k] || 0) - 0.5));
+  }
+
+  // Découverte : paires au hasard ; en cas de nombre impair, un logo tiré au sort passe directement au tour suivant.
+  function discoveryPairs(ids) {
+    const r = shuffle(ids), out = { pairs: [], bye: null };
+    if (r.length % 2) out.bye = r.pop();
+    for (let i = 0; i < r.length; i += 2) out.pairs.push([r[i], r[i + 1]]);
+    return out;
+  }
+  // Paires de styles proches ; en cas de nombre impair, le favori du joueur est qualifié d'office.
+  function similarPairs(ids) {
+    const rest = ids.slice().sort((a, b) => tasteScore(b) - tasteScore(a) || Math.random() - 0.5);
+    const out = { pairs: [], bye: null };
+    if (rest.length % 2) out.bye = rest.shift();
+    while (rest.length) {
+      const a = rest.shift();
+      let best = 0;
+      rest.forEach((b, i) => { if (similarity(a, b) > similarity(a, rest[best])) best = i; });
+      out.pairs.push(shuffle([a, rest.splice(best, 1)[0]]));
+    }
+    return out;
   }
 
   async function start() {
@@ -199,18 +231,32 @@
     btn.disabled = true;
     await loadCatalog();
     btn.disabled = false;
-    g = { pool: pickPool(), next: [], mi: 0, duels: [], done: 0, total: SIZE - 1 };
-    g.pool.forEach((id) => { const it = items.get(id); if (it.img) new Image().src = it.img; });
+    const all = [...items.keys()];
+    const first = discoveryPairs(all);
+    g = { round: 1, pairs: first.pairs, bye: first.bye, mi: 0, winners: [], rescued: null, duels: [], done: 0, total: all.length - 1, taste: {} };
+    all.forEach((id) => { const it = items.get(id); if (it.img) new Image().src = it.img; });
     busy = false;
     show("arena");
     render();
   }
 
+  function stageName() {
+    const left = g.pairs.length * 2 + (g.bye ? 1 : 0);
+    if (g.round === 1) return ["Tour de découverte", `Duel ${g.mi + 1} sur ${g.pairs.length} · chaque logo passe une fois`];
+    if (left === 2) return ["🏆 Finale", "Le dernier duel"];
+    if (left <= 4) return ["Demi-finales", `Duel ${g.mi + 1} sur ${g.pairs.length} · styles proches`];
+    return [`Tour ${g.round} · affinage`, `Duel ${g.mi + 1} sur ${g.pairs.length} · styles proches de vos choix`];
+  }
+
   function render() {
-    const a = g.pool[g.mi * 2], b = g.pool[g.mi * 2 + 1];
-    $("#stage").textContent = STAGES[g.pool.length] || `Tour de ${g.pool.length}`;
-    $("#match").textContent = g.pool.length === 2 ? "Le dernier duel" : `Duel ${g.mi + 1} sur ${g.pool.length / 2}`;
-    $("#prompt").textContent = g.pool.length === 2 ? "Quelle identité pour les Champions IA ?" : "Laquelle préférez-vous ?";
+    const [a, b] = g.pairs[g.mi];
+    const [stage, match] = stageName();
+    $("#stage").textContent = stage;
+    $("#match").textContent = match;
+    const isFinal = g.round > 1 && g.pairs.length === 1 && !g.bye;
+    let prompt = isFinal ? "Quelle identité pour les Champions IA ?" : "Laquelle préférez-vous ?";
+    if (g.rescued && (a === g.rescued || b === g.rescued) && g.round === 2) prompt = "🔁 Un logo proche de vos goûts a été repêché. Laquelle préférez-vous ?";
+    $("#prompt").textContent = prompt;
     $("#bar").style.width = `${(g.done / g.total) * 100}%`;
     const box = $("#duel");
     box.innerHTML = "";
@@ -235,10 +281,11 @@
   function pick(i) {
     if (busy || !g || views.arena.hidden) return;
     busy = true;
-    const a = g.pool[g.mi * 2], b = g.pool[g.mi * 2 + 1];
-    const w = i === 0 ? a : b;
+    const [a, b] = g.pairs[g.mi];
+    const w = i === 0 ? a : b, l = i === 0 ? b : a;
     g.duels.push([a, b, w]);
-    g.next.push(w);
+    learn(w, l);
+    g.winners.push(w);
     g.done += 1;
     document.querySelectorAll("#duel .card").forEach((c, k) => {
       c.classList.add(k === i ? "is-picked" : "is-out");
@@ -247,21 +294,52 @@
     $("#bar").style.width = `${(g.done / g.total) * 100}%`;
     setTimeout(() => {
       g.mi += 1;
-      if (g.mi * 2 >= g.pool.length) {
-        g.pool = g.next;
-        g.next = [];
-        g.mi = 0;
-      }
+      if (g.mi >= g.pairs.length) nextRound();
       busy = false;
-      if (g.pool.length === 1) finish();
+      if (g.champion) finish();
       else render();
     }, 450);
   }
 
+  function nextRound() {
+    const pool = g.winners.slice();
+    if (g.bye) pool.push(g.bye);
+    // Après la découverte, si le nombre de qualifiés est impair, on repêche le logo éliminé le plus proche de vos goûts.
+    if (g.round === 1 && pool.length % 2 && pool.length > 1) {
+      const out = [...items.keys()].filter((id) => !pool.includes(id)).sort((x, y) => tasteScore(y) - tasteScore(x));
+      g.rescued = out[0];
+      pool.push(g.rescued);
+      g.total += 1;
+    }
+    g.round += 1;
+    g.mi = 0;
+    g.winners = [];
+    if (pool.length === 1) {
+      g.champion = pool[0];
+      return;
+    }
+    const next = similarPairs(pool);
+    g.pairs = next.pairs;
+    g.bye = next.bye;
+  }
+
+  // Logos les plus proches des goûts du joueur (hors champion)
+  function suggestions(n) {
+    return [...items.keys()].filter((id) => id !== g.champion && tagsOf(id).length)
+      .sort((x, y) => tasteScore(y) - tasteScore(x)).slice(0, n);
+  }
+  function tasteLabels() {
+    return Object.entries(g.taste).filter(([, v]) => v > 0).sort((a, b) => b[1] - a[1]).slice(0, 4)
+      .map(([k]) => (typeof TAG_LABELS !== "undefined" && TAG_LABELS[k]) || k);
+  }
+
   // ---------- Fin de partie ----------
   function finish() {
-    g.champion = g.pool[0];
     $("#champion").innerHTML = art(items.get(g.champion));
+    const labels = tasteLabels();
+    $("#taste").innerHTML = labels.length ? `Vos goûts : ${labels.map((t) => `<span class="tag">${esc(t)}</span>`).join(" ")}` : "";
+    $("#similar").innerHTML = suggestions(3).map((id) => `<li><div class="thumb">${art(items.get(id))}</div></li>`).join("");
+    $("#similar-box").hidden = !$("#similar").innerHTML;
     $("#top5").innerHTML = "";
     $("#mine").innerHTML = "";
     $("#duel").innerHTML = "";
