@@ -20,9 +20,9 @@
   };
 
   // ---------- Catalogue : identités du site + propositions des joueurs ----------
-  // Identités en compétition : 20 propositions : 12 de la série « charte LCL » et 8 de la série « Héritage » (à garder alignée avec server/lib/shared.js).
-  const ACTIVE = [33, 35, 36, 37, 40, 41, 42, 43, 45, 48, 50, 53, 57, 58, 59, 60, 61, 62, 63, 64];
-  const items = new Map(LOGOS_LCL.filter((l) => ACTIVE.includes(l.id)).map((l) => [l.id, l]));
+  // Identités en compétition : 45 propositions : 12 « charte LCL », 8 « Héritage », 16 « Univers LCL » et 9 « Inspirations » (à garder alignée avec server/lib/shared.js).
+  const ACTIVE = [33, 35, 36, 37, 40, 41, 42, 43, 45, 48, 50, 53, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89];
+  const items = new Map([...LOGOS_LCL, ...LOGOS_UNIVERS, ...LOGOS_INSPI].filter((l) => ACTIVE.includes(l.id)).map((l) => [l.id, l]));
   let played = {};
   const asItem = (p) => ({ id: p.id, name: p.name, by: p.by, img: `${API}/img?id=${p.id}` });
   async function loadCatalog() {

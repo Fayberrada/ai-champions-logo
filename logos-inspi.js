@@ -106,7 +106,7 @@ const LOGOS_INSPI = (function () {
     txt(120, 204, "CHAMPIONS IA", { size: 21, fill: W, len: 176 }) + txt(120, 224, "LCL", { weight: 700, size: 11, fill: Y, ls: 7 }));
 
   // 86 — Écusson
-  add("Écusson", "Blason de promotion", ["badge", "heritage", "fond-clair", "sobre"],
+  add("Écusson", "Blason de promotion", ["emblem", "heritage", "fond-clair", "sobre"],
     `<defs><path id="L86a" d="M46 84Q120 26 194 84"/><clipPath id="L86c"><path d="M120 14L206 40V112C206 168 166 204 120 226C74 204 34 168 34 112V40Z"/></clipPath></defs>` +
     frame("#EEF1FB") +
     `<path d="M120 14L206 40V112C206 168 166 204 120 226C74 204 34 168 34 112V40Z" fill="${I}"/>` +
@@ -118,7 +118,7 @@ const LOGOS_INSPI = (function () {
     `<path d="M56 156H184L174 168L184 180H56L66 168Z" fill="${Y}"/>` + txt(120, 172, "LCL · PROMO 2026", { size: 10, fill: I, ls: .5 }));
 
   // 87 — Écusson parti
-  add("Écusson parti", "Blason jaune et indigo", ["badge", "geo", "fond-clair", "moderne"],
+  add("Écusson parti", "Blason jaune et indigo", ["emblem", "geo", "fond-clair", "moderne"],
     `<defs><clipPath id="L87c"><path d="M120 14L184 32V92C184 134 156 160 120 176C84 160 56 134 56 92V32Z"/></clipPath></defs>` +
     frame(W) +
     `<g clip-path="url(#L87c)"><rect x="40" y="0" width="80" height="190" fill="${Y}"/><rect x="120" y="0" width="80" height="190" fill="${I}"/></g>` +
@@ -127,7 +127,7 @@ const LOGOS_INSPI = (function () {
     txt(120, 206, "CHAMPIONS IA", { size: 21, fill: I, len: 176 }) + txt(120, 226, "LCL", { weight: 700, size: 11, fill: B2, ls: 7 }));
 
   // 88 — Insigne de promotion
-  add("Insigne promo", "Médaillon et ruban", ["badge", "ludique", "fond-indigo", "moderne"],
+  add("Insigne promo", "Médaillon et ruban", ["emblem", "ludique", "fond-indigo", "moderne"],
     `<defs><path id="L88r" d="M46 100A74 74 0 0 1 194 100"/></defs>` +
     frame("#1A1F5C") +
     `<path d="M70 164L56 214L80 204L94 222L104 176Z" fill="${B2}"/><path d="M170 164L184 214L160 204L146 222L136 176Z" fill="${B2}"/>` +
@@ -146,4 +146,4 @@ const LOGOS_INSPI = (function () {
 
   return L;
 })();
-if (typeof TAG_LABELS !== "undefined") Object.assign(TAG_LABELS, { tech: "Tech / circuits", badge: "Écusson / insigne", minimal: "Minimaliste" });
+if (typeof TAG_LABELS !== "undefined") Object.assign(TAG_LABELS, { tech: "Tech / circuits", minimal: "Minimaliste" });

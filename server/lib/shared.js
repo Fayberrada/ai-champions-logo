@@ -1,7 +1,7 @@
 // Outils communs : accès Redis (API REST Upstash), CORS, propositions, classement.
-// Identités du site actuellement en compétition (12 « charte LCL » + 8 « Héritage »).
+// Identités du site actuellement en compétition (12 « charte LCL » + 8 « Héritage » + 16 « Univers LCL » + 9 « Inspirations »).
 // Les duels sur des identités retirées ne comptent plus dans le classement.
-export const ACTIVE_BUILTIN = [33, 35, 36, 37, 40, 41, 42, 43, 45, 48, 50, 53, 57, 58, 59, 60, 61, 62, 63, 64];
+export const ACTIVE_BUILTIN = [33, 35, 36, 37, 40, 41, 42, 43, 45, 48, 50, 53, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89];
 export const MAX_PROPOSALS_PER_PSEUDO = 3;
 export const MAX_IMAGE_BYTES = 350 * 1024;
 
