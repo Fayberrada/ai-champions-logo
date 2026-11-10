@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI Champions — choix du logo</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="top">
+    <div class="wrap">
+      <h1>AI Champions · choix du logo</h1>
+      <nav aria-label="Sections">
+        <button type="button" class="tab is-active" data-tab="catalogue">Catalogue (60)</button>
+        <button type="button" class="tab" data-tab="vote">Choisir</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section id="catalogue" class="view is-active" aria-label="Catalogue des logos">
+      <p class="intro">Soixante propositions, de plusieurs familles d'idées (champion, IA, communauté, nature, idée, mascotte…) et de plusieurs styles. Rendez-vous dans l'onglet <strong>Choisir</strong> pour désigner le vôtre.</p>
+      <div class="filters" id="filters"></div>
+      <div class="grid" id="grid"></div>
+    </section>
+
+    <section id="vote" class="view" aria-label="Choisir un logo">
+      <div id="intro-box" class="panel">
+        <h2>Désignez le logo AI Champions</h2>
+        <p>À chaque tour, trois logos s'affrontent. Vous en choisissez un : il passe au tour suivant, les deux autres sont éliminés. Les logos restants sont regroupés par trois à chaque tour, jusqu'à ce qu'un seul gagne.</p>
+        <p class="hint">Raccourcis clavier : touches <kbd>1</kbd>, <kbd>2</kbd>, <kbd>3</kbd>.</p>
+        <button type="button" class="btn primary" id="start-btn">Commencer</button>
+      </div>
+
+      <div id="round-box" class="panel" hidden>
+        <div class="round-head">
+          <span id="round-label"></span>
+          <span id="match-label"></span>
+        </div>
+        <div class="options" id="options"></div>
+        <p class="status" id="status" aria-live="polite"></p>
+      </div>
+
+      <div id="winner-box" class="panel" hidden>
+        <h2>Le logo gagnant</h2>
+        <div class="winner" id="winner"></div>
+        <p id="winner-meta"></p>
+        <div class="actions">
+          <button type="button" class="btn" id="download-btn">Télécharger le SVG</button>
+          <button type="button" class="btn" id="export-btn">Exporter mes choix (JSON)</button>
+          <button type="button" class="btn primary" id="restart-btn">Recommencer</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="wrap foot">
+    <p>Les choix sont enregistrés dans ce navigateur uniquement. Pour agréger les choix de plusieurs personnes, exportez le JSON de chacune.</p>
+  </footer>
+
+  <script src="logos.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
