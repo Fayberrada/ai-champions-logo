@@ -39,6 +39,32 @@
       </div>
     </section>
 
+    <!-- Podium sur l'accueil -->
+    <section id="podium-box" class="panel podium-panel" hidden>
+      <div class="podium-head">
+        <div>
+          <p class="kicker">Classement général</p>
+          <h2 class="title">Le top 3 en ce moment</h2>
+          <p class="sub" id="podium-stats"></p>
+        </div>
+        <button type="button" class="btn" id="to-ranking">Voir le classement complet</button>
+      </div>
+      <ol class="podium" id="podium"></ol>
+    </section>
+
+    <!-- Classement complet -->
+    <section id="ranking" class="panel" hidden>
+      <div class="podium-head">
+        <div>
+          <p class="kicker">Classement général</p>
+          <h2 class="title">Tous les logos, sur l'ensemble des votes</h2>
+          <p class="sub" id="ranking-stats"></p>
+        </div>
+        <button type="button" class="btn ghost" id="ranking-back">Retour</button>
+      </div>
+      <ol class="ranking" id="ranking-list"></ol>
+    </section>
+
     <!-- Proposer un logo -->
     <section id="propose" class="panel" hidden>
       <p class="kicker">Proposer un logo</p>
@@ -97,6 +123,7 @@
       <div class="actions">
         <button type="button" class="btn primary" id="again">Rejouer</button>
         <button type="button" class="btn" id="results-propose">🎨 Proposer un logo</button>
+        <button type="button" class="btn" id="results-ranking">🏆 Classement complet</button>
         <button type="button" class="btn" id="retry" hidden>Réessayer l'envoi</button>
       </div>
     </section>

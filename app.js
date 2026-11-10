@@ -44,11 +44,69 @@
   }
   let renders = 0;
 
-  const views = { home: $("#home"), propose: $("#propose"), arena: $("#arena"), results: $("#results") };
+  const views = { home: $("#home"), propose: $("#propose"), arena: $("#arena"), results: $("#results"), ranking: $("#ranking") };
   const show = (name) => {
     Object.keys(views).forEach((k) => (views[k].hidden = k !== name));
+    $("#podium-box").hidden = name !== "home" || !$("#podium").innerHTML;
     window.scrollTo({ top: 0 });
+    if (name === "home") loadPodium();
   };
+
+  // ---------- Classement général : podium de l'accueil et liste complète ----------
+  const rankItem = (row) => (row.proposal ? asItem(row.proposal) : items.get(row.id));
+  const statsLine = (d) => `${d.players} joueur${d.players > 1 ? "s" : ""} · ${d.duels} duels · ${d.ranked} logos classés`;
+  async function fetchTop(all) {
+    const r = await fetch(`${API}/top${all ? "?all=1" : ""}`);
+    if (!r.ok) throw new Error();
+    return r.json();
+  }
+  async function loadPodium() {
+    try {
+      const d = await fetchTop(false);
+      const top = d.top.filter((row) => rankItem(row)).slice(0, 3);
+      if (!top.length) { $("#podium").innerHTML = ""; $("#podium-box").hidden = true; return; }
+      $("#podium-stats").textContent = statsLine(d);
+      const cls = ["first", "second", "third"], medal = ["🥇", "🥈", "🥉"];
+      // Ordre visuel du podium : 2e, 1er, 3e
+      const order = top.length === 3 ? [1, 0, 2] : top.map((_, i) => i);
+      $("#podium").innerHTML = order.map((i) => {
+        const row = top[i];
+        return `<li class="${cls[i]}"><div class="thumb">${art(rankItem(row))}</div><span class="score">${medal[i]} ${row.score} %</span><div class="step">${i + 1}</div></li>`;
+      }).join("");
+      $("#podium-box").hidden = views.home.hidden;
+    } catch (e) {
+      $("#podium-box").hidden = true;
+    }
+  }
+  async function showRanking() {
+    show("ranking");
+    $("#ranking-stats").textContent = "Chargement…";
+    $("#ranking-list").innerHTML = "";
+    try {
+      const d = await fetchTop(true);
+      $("#ranking-stats").textContent = statsLine(d) + ". Score = chances de gagner un duel face à un logo moyen.";
+      const ranked = new Set(d.all.map((r) => r.id));
+      const medal = (n) => ["🥇", "🥈", "🥉"][n - 1] || n;
+      let html = d.all.filter((row) => rankItem(row)).map((row) => {
+        const it = rankItem(row);
+        return `<li><span class="pos">${medal(row.rank)}</span><div class="thumb">${art(it)}</div>` +
+          `<div><div class="name">${esc(it.name)}${it.by ? ` <span class="meta">par ${esc(it.by)}</span>` : ""}</div>` +
+          `<div class="meta">${row.wins} victoire${row.wins > 1 ? "s" : ""} sur ${row.duels} duel${row.duels > 1 ? "s" : ""} · ${row.champion} sacre${row.champion > 1 ? "s" : ""}</div></div>` +
+          `<span class="score">${row.score} %</span></li>`;
+      }).join("");
+      html += [...items.keys()].filter((id) => !ranked.has(id)).map((id) => {
+        const it = items.get(id);
+        return `<li class="unranked"><span class="pos">–</span><div class="thumb">${art(it)}</div><div><div class="name">${esc(it.name)}</div><div class="meta">Pas encore joué</div></div><span class="score"></span></li>`;
+      }).join("");
+      $("#ranking-list").innerHTML = html;
+    } catch (e) {
+      $("#ranking-stats").textContent = "Classement indisponible pour le moment.";
+    }
+  }
+  let rankingBack = "home";
+  $("#to-ranking").addEventListener("click", () => { rankingBack = "home"; showRanking(); });
+  $("#results-ranking").addEventListener("click", () => { rankingBack = "results"; showRanking(); });
+  $("#ranking-back").addEventListener("click", () => show(rankingBack));
 
   // ---------- Pseudo ----------
   let pseudo = store.get(PSEUDO_KEY) || "";
@@ -420,4 +478,7 @@
     if (e.key === "ArrowLeft" || e.key === "1") pick(0);
     else if (e.key === "ArrowRight" || e.key === "2") pick(1);
   });
+
+  // Au chargement : propositions des joueurs puis podium de l'accueil
+  loadCatalog().then(loadPodium);
 })();
