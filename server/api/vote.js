@@ -1,4 +1,4 @@
-import { cors, body, cleanText, saveGame, allGames, allProposals, validIds, ranking, publicProposal } from "../lib/shared.js";
+import { cors, body, cleanText, pseudoKey, saveGame, allGames, allProposals, validIds, ranking, publicProposal } from "../lib/shared.js";
 
 // POST { pseudo, duels: [[a, b, gagnant], ...], champion }
 // Enregistre la partie. Une seule partie compte par pseudo : la dernière remplace la précédente.
@@ -21,9 +21,18 @@ export default async function handler(req, res) {
     }
     const champion = ids.has(b.champion) ? b.champion : null;
     await saveGame({ pseudo, at: new Date().toISOString(), duels, champion });
-    const result = ranking(await allGames(), ids);
-    const props = new Map((await allProposals()).map((p) => [p.id, publicProposal(p)]));
-    result.top = result.top.map((r) => ({ ...r, proposal: props.get(r.id) || null }));
+    const { all, ...result } = ranking(await allGames(), ids);
+    const proposals = await allProposals();
+    const props = new Map(proposals.map((p) => [p.id, publicProposal(p)]));
+    const withProp = (r) => ({ ...r, proposal: props.get(r.id) || null });
+    const rankOf = (id) => all.find((r) => r.id === id) || { id, rank: null };
+    result.top = result.top.map(withProp);
+    // Classement général du champion de ce joueur et de ses propres propositions
+    result.mine = {
+      champion: champion ? withProp(rankOf(champion)) : null,
+      proposals: proposals.filter((p) => p.byKey === pseudoKey(pseudo)).map((p) => withProp(rankOf(p.id)))
+        .sort((x, y) => (x.rank || 1e9) - (y.rank || 1e9)),
+    };
     return res.status(200).json(result);
   } catch (e) {
     return res.status(500).json({ error: "Enregistrement impossible pour le moment" });

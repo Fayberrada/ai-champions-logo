@@ -261,6 +261,7 @@
     g.champion = g.pool[0];
     $("#champion").innerHTML = art(items.get(g.champion));
     $("#top5").innerHTML = "";
+    $("#mine").innerHTML = "";
     $("#duel").innerHTML = "";
     show("results");
     confetti();
@@ -285,9 +286,25 @@
     }
   }
 
+  function renderMine(data) {
+    const chips = [];
+    const chip = (row, label) => {
+      const it = row.proposal ? asItem(row.proposal) : items.get(row.id);
+      if (!it) return;
+      const pos = row.rank ? `${row.rank}${row.rank === 1 ? "er" : "e"} sur ${data.ranked}` : "pas encore classé";
+      chips.push(`<div class="chip"><div class="mini">${art(it)}</div><div><div class="lab">${label}</div><div class="pos">${pos}${row.rank ? ` · ${row.score} %` : ""}</div></div></div>`);
+    };
+    if (data.mine && data.mine.champion) chip(data.mine.champion, "Votre champion au classement général");
+    if (data.mine && data.mine.proposals.length) {
+      chip(data.mine.proposals[0], data.mine.proposals.length > 1 ? "Votre meilleure proposition" : "Votre proposition");
+    }
+    $("#mine").innerHTML = chips.join("");
+  }
+
   function renderTop(data) {
+    renderMine(data);
     const n = data.players;
-    $("#stats").textContent = `${n} joueur${n > 1 ? "s" : ""} · ${data.duels} duels joués. Score = chances de gagner un duel face à une proposition moyenne.`;
+    $("#stats").textContent = `${n} joueur${n > 1 ? "s" : ""} · ${data.duels} duels joués · ${data.ranked} logos classés. Score = chances de gagner un duel face à une proposition moyenne.`;
     const medals = ["🥇", "🥈", "🥉", "4", "5"];
     $("#top5").innerHTML = data.top
       .map((row, k) => {

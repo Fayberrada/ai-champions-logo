@@ -114,8 +114,15 @@ main { padding-top: 28px; padding-bottom: 48px; }
 .crown { font-size: 2.4rem; line-height: 1; margin-bottom: 6px; animation: bob 1.6s ease-in-out infinite; }
 .champion-logo { border-radius: 30px; overflow: hidden; box-shadow: 0 0 0 4px var(--gold), var(--shadow); }
 .champion-logo svg, .top5 svg { display: block; width: 100%; height: auto; }
+.mine { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 18px; }
+.mine .chip { display: flex; align-items: center; gap: 10px; background: var(--bg); border: 1px solid var(--line); border-radius: 16px; padding: 8px 14px 8px 8px; text-align: left; }
+.mine .mini { width: 48px; flex: none; border-radius: 10px; overflow: hidden; }
+.mine .mini svg, .mine .mini .ugc { display: block; width: 100%; }
+.mine .mini .by { display: none; }
+.mine .pos { font-weight: 800; font-size: 1.05rem; }
+.mine .lab { color: var(--muted); font-size: .8rem; }
 @keyframes bob { 50% { transform: translateY(-5px); } }
-.top5 { list-style: none; padding: 0; margin: 16px auto 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; max-width: 900px; }
+.top5 { list-style: none; padding: 0; margin: 16px auto 0; display: grid; align-items: start; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; max-width: 900px; }
 .top5 li { background: var(--bg); border: 1px solid var(--line); border-radius: 20px; padding: 10px; display: flex; flex-direction: column; gap: 8px; }
 .top5 li:first-child { border-color: var(--gold); box-shadow: 0 0 0 2px var(--gold); }
 .top5 .rank { font-weight: 800; font-size: 1.15rem; }

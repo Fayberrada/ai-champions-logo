@@ -127,5 +127,6 @@ export function ranking(games, ids) {
     champion: s.champions.get(id) || 0,
   }));
   rows.sort((x, y) => y.score - x.score || y.champion - x.champion || y.wins - x.wins);
-  return { players: games.length, duels: s.duels, top: rows.slice(0, 5) };
+  rows.forEach((r, i) => (r.rank = i + 1));
+  return { players: games.length, duels: s.duels, ranked: rows.length, top: rows.slice(0, 5), all: rows };
 }

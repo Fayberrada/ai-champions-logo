@@ -6,7 +6,7 @@ export default async function handler(req, res) {
   res.setHeader("Cache-Control", "no-store");
   if (req.method !== "GET") return res.status(405).json({ error: "Méthode non autorisée" });
   try {
-    const result = ranking(await allGames(), await validIds());
+    const { all, ...result } = ranking(await allGames(), await validIds());
     const props = new Map((await allProposals()).map((p) => [p.id, publicProposal(p)]));
     result.top = result.top.map((r) => ({ ...r, proposal: props.get(r.id) || null }));
     return res.status(200).json(result);
