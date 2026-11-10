@@ -32,6 +32,35 @@
         </div>
         <p class="hint" id="pseudo-hint">Seule votre dernière partie compte dans le classement commun.</p>
       </form>
+      <div class="propose-cta">
+        <span class="cta-icon" aria-hidden="true">🎨</span>
+        <div><strong>Vous avez une idée de logo ?</strong><br><span class="sub">Proposez jusqu'à 3 logos : ils entrent directement dans le tournoi.</span></div>
+        <button type="button" class="btn" id="to-propose">Proposer un logo</button>
+      </div>
+    </section>
+
+    <!-- Proposer un logo -->
+    <section id="propose" class="panel" hidden>
+      <p class="kicker">Proposer un logo</p>
+      <h2 class="title">Votre logo entre dans le tournoi</h2>
+      <p class="lead">Image carrée de préférence (PNG, JPEG, WebP ou SVG). Elle est recadrée au carré et allégée avant l'envoi. Maximum 3 propositions par pseudo.</p>
+      <form id="propose-form" class="propose" autocomplete="off">
+        <label class="drop" id="drop">
+          <input type="file" id="file" accept="image/png,image/jpeg,image/webp,image/svg+xml">
+          <span class="drop-empty" id="drop-empty"><span class="big-icon" aria-hidden="true">⬆</span>Glissez une image ici ou cliquez pour choisir</span>
+          <img id="preview" alt="Aperçu de votre logo" hidden>
+        </label>
+        <div class="fields">
+          <label for="prop-name">Nom du logo <span class="sub">(facultatif)</span></label>
+          <input id="prop-name" type="text" maxlength="40" placeholder="Ex. Le phare IA">
+          <label class="check"><input type="checkbox" id="prop-ok" required> Je confirme que cette image est de moi ou libre de droits, et qu'elle respecte la charte LCL.</label>
+          <div class="row">
+            <button type="submit" class="btn primary big" id="prop-send">Envoyer ma proposition</button>
+            <button type="button" class="btn ghost" id="prop-back">Retour</button>
+          </div>
+          <p class="hint" id="prop-status" aria-live="polite"></p>
+        </div>
+      </form>
     </section>
 
     <!-- Duels -->
