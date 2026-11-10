@@ -3,60 +3,102 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>AI Champions — choix du logo</title>
+  <title>AI Champions LCL</title>
+  <meta name="description" content="Tournoi pour élire le logo des AI Champions LCL.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <header class="top">
     <div class="wrap">
-      <h1>AI Champions · choix du logo</h1>
+      <div class="brand"><span class="brand-mark" aria-hidden="true">✦</span> AI Champions <span class="brand-lcl">LCL</span></div>
       <nav aria-label="Sections">
-        <button type="button" class="tab is-active" data-tab="catalogue">Catalogue (60)</button>
-        <button type="button" class="tab" data-tab="vote">Choisir</button>
+        <button type="button" class="tab is-active" data-tab="jeu" aria-pressed="true">Le tournoi</button>
+        <button type="button" class="tab" data-tab="catalogue" aria-pressed="false">Les logos</button>
+        <button type="button" class="tab" data-tab="classement" aria-pressed="false">Classement</button>
       </nav>
     </div>
   </header>
 
   <main class="wrap">
-    <section id="catalogue" class="view is-active" aria-label="Catalogue des logos">
-      <p class="intro">Soixante propositions, de plusieurs familles d'idées (champion, IA, communauté, nature, idée, mascotte…) et de plusieurs styles. Rendez-vous dans l'onglet <strong>Choisir</strong> pour désigner le vôtre.</p>
+    <!-- ====== JEU ====== -->
+    <section id="jeu" class="view is-active" aria-label="Tournoi">
+
+      <div id="intro-box" class="hero">
+        <p class="kicker">Tournoi officiel</p>
+        <h1>Élisez le logo des <span class="hl">AI Champions</span> LCL</h1>
+        <p class="lead">Des duels à élimination directe. À chaque duel, gardez le logo qui représente le mieux la communauté. À la fin : un champion et le top 5.</p>
+        <div class="modes">
+          <button type="button" class="mode" data-size="16">
+            <span class="mode-title">Partie rapide</span>
+            <span class="mode-sub">16 logos · 17 duels · ~2 min</span>
+          </button>
+          <button type="button" class="mode primary" data-size="32">
+            <span class="mode-title">Grand tournoi</span>
+            <span class="mode-sub">32 logos · 33 duels · ~4 min</span>
+          </button>
+        </div>
+        <ol class="steps">
+          <li><strong>Phase finale</strong> : 16<sup>es</sup> ou 8<sup>es</sup>, quarts, demies.</li>
+          <li><strong>Match pour la 5<sup>e</sup> place</strong> entre les quarts de finalistes éliminés.</li>
+          <li><strong>Petite finale</strong> pour la 3<sup>e</sup> place, puis la <strong>grande finale</strong>.</li>
+        </ol>
+        <p class="hint">Au clavier : <kbd>←</kbd> / <kbd>→</kbd> ou <kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd> <kbd>4</kbd>.</p>
+      </div>
+
+      <div id="round-box" class="arena" hidden>
+        <div class="arena-head">
+          <div>
+            <p class="stage" id="stage"></p>
+            <p class="match" id="match-label"></p>
+          </div>
+          <button type="button" class="btn ghost" id="quit-btn">Abandonner</button>
+        </div>
+        <div class="progress" aria-hidden="true"><div class="bar" id="bar"></div></div>
+        <p class="prompt" id="prompt"></p>
+        <div class="options" id="options"></div>
+      </div>
+
+      <div id="winner-box" class="results" hidden>
+        <div class="confetti" id="confetti" aria-hidden="true"></div>
+        <p class="kicker">Votre champion</p>
+        <div class="champion">
+          <div class="crown" aria-hidden="true">👑</div>
+          <div class="champion-logo" id="champion"></div>
+          <p class="champion-name" id="champion-name"></p>
+        </div>
+        <h2>Votre top 5</h2>
+        <ol class="top5" id="top5"></ol>
+        <div class="actions">
+          <button type="button" class="btn primary" id="again-btn">Rejouer</button>
+          <button type="button" class="btn" id="copy-btn">Copier mon top 5</button>
+          <button type="button" class="btn" id="download-btn">Télécharger le logo gagnant (SVG)</button>
+        </div>
+        <p class="status" id="status" aria-live="polite"></p>
+      </div>
+    </section>
+
+    <!-- ====== CATALOGUE ====== -->
+    <section id="catalogue" class="view" aria-label="Les logos en compétition">
+      <h2 class="section-title">Les <span id="count"></span> logos en compétition</h2>
       <div class="filters" id="filters"></div>
       <div class="grid" id="grid"></div>
     </section>
 
-    <section id="vote" class="view" aria-label="Choisir un logo">
-      <div id="intro-box" class="panel">
-        <h2>Désignez le logo AI Champions</h2>
-        <p>À chaque tour, trois logos s'affrontent. Vous en choisissez un : il passe au tour suivant, les deux autres sont éliminés. Les logos restants sont regroupés par trois à chaque tour, jusqu'à ce qu'un seul gagne.</p>
-        <p class="hint">Raccourcis clavier : touches <kbd>1</kbd>, <kbd>2</kbd>, <kbd>3</kbd>.</p>
-        <button type="button" class="btn primary" id="start-btn">Commencer</button>
+    <!-- ====== CLASSEMENT ====== -->
+    <section id="classement" class="view" aria-label="Classement cumulé">
+      <h2 class="section-title">Classement cumulé</h2>
+      <p class="lead small">Points par partie : 1<sup>er</sup> = 10, 2<sup>e</sup> = 7, 3<sup>e</sup> = 5, 4<sup>e</sup> = 3, 5<sup>e</sup> = 1. <span id="games-count"></span></p>
+      <ol class="leader" id="leader"></ol>
+      <div class="actions">
+        <button type="button" class="btn" id="export-btn">Exporter les résultats (JSON)</button>
+        <button type="button" class="btn ghost" id="reset-btn">Effacer l'historique</button>
       </div>
-
-      <div id="round-box" class="panel" hidden>
-        <div class="round-head">
-          <span id="round-label"></span>
-          <span id="match-label"></span>
-        </div>
-        <div class="options" id="options"></div>
-        <p class="status" id="status" aria-live="polite"></p>
-      </div>
-
-      <div id="winner-box" class="panel" hidden>
-        <h2>Le logo gagnant</h2>
-        <div class="winner" id="winner"></div>
-        <p id="winner-meta"></p>
-        <div class="actions">
-          <button type="button" class="btn" id="download-btn">Télécharger le SVG</button>
-          <button type="button" class="btn" id="export-btn">Exporter mes choix (JSON)</button>
-          <button type="button" class="btn primary" id="restart-btn">Recommencer</button>
-        </div>
-      </div>
+      <p class="hint">Les parties sont enregistrées dans ce navigateur. Pour consolider les votes d'une équipe, chacun peut copier son top 5 ou exporter le JSON.</p>
     </section>
   </main>
-
-  <footer class="wrap foot">
-    <p>Les choix sont enregistrés dans ce navigateur uniquement. Pour agréger les choix de plusieurs personnes, exportez le JSON de chacune.</p>
-  </footer>
 
   <script src="logos.js"></script>
   <script src="app.js"></script>

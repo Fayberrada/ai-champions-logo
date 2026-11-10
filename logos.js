@@ -1,64 +1,237 @@
-// Catalogue de 60 propositions de logo pour « AI Champions ».
-// Chaque entrée : id, nom, esprit (la famille d'idées), style (le traitement graphique), svg (contenu interne, viewBox 0 0 200 200).
-const LOGOS = [
-  { id: 1, name: "Étoile d'or", esprit: "Champion", style: "Plat", svg: `<circle cx="100" cy="100" r="90" fill="#1B2A4A"/><path d="M100 40l16 40 44 4-33 29 10 43-37-23-37 23 10-43-33-29 44-4z" fill="#F2B134"/>` },
-  { id: 2, name: "Médaille AI", esprit: "Champion", style: "Emblème", svg: `<circle cx="100" cy="85" r="50" fill="#F2B134"/><circle cx="100" cy="85" r="36" fill="none" stroke="#B7791F" stroke-width="4"/><path d="M70 130l-14 50 44-14 14 28 14-50z" fill="#E4572E"/><text x="100" y="98" font-size="34" font-family="Arial Black,Arial" text-anchor="middle" fill="#1B2A4A">AI</text>` },
-  { id: 3, name: "Trophée circuit", esprit: "Champion", style: "Contour", svg: `<g fill="none" stroke="#00A3A1" stroke-width="8" stroke-linecap="round"><path d="M70 50h60v40a30 30 0 0 1-60 0z"/><path d="M100 120v30M70 160h60"/><path d="M40 60h30M130 60h30"/></g><circle cx="100" cy="70" r="6" fill="#00A3A1"/>` },
-  { id: 4, name: "Neurone", esprit: "Intelligence artificielle", style: "Monochrome", svg: `<g stroke="#6C5CE7" stroke-width="5"><path d="M100 100L100 35M100 100L160 70M100 100L160 135M100 100L100 165M100 100L40 135M100 100L40 70"/></g><circle cx="100" cy="100" r="22" fill="#6C5CE7"/><g fill="#6C5CE7"><circle cx="100" cy="35" r="10"/><circle cx="160" cy="70" r="10"/><circle cx="160" cy="135" r="10"/><circle cx="100" cy="165" r="10"/><circle cx="40" cy="135" r="10"/><circle cx="40" cy="70" r="10"/></g>` },
-  { id: 5, name: "Couronne pixel", esprit: "Champion", style: "Pixel", svg: `<g fill="#E4572E"><rect x="40" y="80" width="20" height="20"/><rect x="70" y="60" width="20" height="40"/><rect x="100" y="40" width="20" height="60"/><rect x="130" y="60" width="20" height="40"/><rect x="160" y="80" width="20" height="20"/><rect x="40" y="100" width="140" height="30"/></g><g fill="#1B2A4A"><rect x="50" y="110" width="20" height="10"/><rect x="90" y="110" width="20" height="10"/><rect x="130" y="110" width="20" height="10"/></g>` },
-  { id: 6, name: "Laurier AI", esprit: "Champion", style: "Typographique", svg: `<g fill="#2E7D32"><ellipse cx="60" cy="110" rx="12" ry="26" transform="rotate(20 60 110)"/><ellipse cx="50" cy="80" rx="12" ry="26" transform="rotate(45 50 80)"/><ellipse cx="75" cy="145" rx="12" ry="24" transform="rotate(-20 75 145)"/><ellipse cx="140" cy="110" rx="12" ry="26" transform="rotate(-20 140 110)"/><ellipse cx="150" cy="80" rx="12" ry="26" transform="rotate(-45 150 80)"/><ellipse cx="125" cy="145" rx="12" ry="24" transform="rotate(20 125 145)"/></g><text x="100" y="118" font-size="40" font-family="Georgia,serif" font-weight="bold" text-anchor="middle" fill="#1B2A4A">AI</text>` },
-  { id: 7, name: "Cercles d'entraide", esprit: "Communauté", style: "Plat", svg: `<circle cx="80" cy="85" r="45" fill="#00A3A1" fill-opacity=".8"/><circle cx="120" cy="85" r="45" fill="#F2B134" fill-opacity=".8"/><circle cx="100" cy="125" r="45" fill="#E4572E" fill-opacity=".8"/>` },
-  { id: 8, name: "Fusée", esprit: "Mouvement", style: "Plat", svg: `<path d="M100 30c30 25 35 70 25 110h-50c-10-40-5-85 25-110z" fill="#1B2A4A"/><circle cx="100" cy="85" r="14" fill="#F2B134"/><path d="M75 120l-20 25 25-5zM125 120l20 25-25-5z" fill="#E4572E"/><path d="M90 145h20l-10 25z" fill="#F2B134"/>` },
-  { id: 9, name: "Flamme", esprit: "Mouvement", style: "Plat", svg: `<path d="M100 25c20 35 45 55 45 95a45 45 0 0 1-90 0c0-25 15-40 25-55 2 15 8 22 16 25-4-30 0-45 4-65z" fill="#E4572E"/><path d="M100 110c10 15 20 22 20 40a20 20 0 0 1-40 0c0-12 8-20 20-40z" fill="#F2B134"/>` },
-  { id: 10, name: "Boussole", esprit: "Idée & lumière", style: "Contour", svg: `<circle cx="100" cy="100" r="75" fill="none" stroke="#1B2A4A" stroke-width="8"/><path d="M100 40l18 60-18 60-18-60z" fill="#E4572E"/><path d="M100 160l18-60-18-60-18 60z" fill="#1B2A4A"/><circle cx="100" cy="100" r="7" fill="#F2B134"/>` },
-  { id: 11, name: "Ampoule", esprit: "Idée & lumière", style: "Plat", svg: `<path d="M100 40a50 50 0 0 0-30 90v20h60v-20a50 50 0 0 0-30-90z" fill="#F2B134"/><rect x="75" y="150" width="50" height="10" fill="#1B2A4A"/><rect x="82" y="162" width="36" height="10" fill="#1B2A4A"/><g stroke="#F2B134" stroke-width="6" stroke-linecap="round"><path d="M30 80h15M155 80h15M45 40l11 11M155 40l-11 11"/></g>` },
-  { id: 12, name: "Puce", esprit: "Intelligence artificielle", style: "Pictogramme", svg: `<rect x="60" y="60" width="80" height="80" rx="8" fill="#1B2A4A"/><g stroke="#1B2A4A" stroke-width="8" stroke-linecap="round"><path d="M80 40v20M100 40v20M120 40v20M80 140v20M100 140v20M120 140v20M40 80h20M40 100h20M40 120h20M140 80h20M140 100h20M140 120h20"/></g><text x="100" y="112" font-size="34" font-family="Arial Black,Arial" text-anchor="middle" fill="#00A3A1">AI</text>` },
-  { id: 13, name: "Robot souriant", esprit: "Mascotte", style: "Mascotte illustrée", svg: `<rect x="90" y="25" width="8" height="30" fill="#1B2A4A"/><circle cx="94" cy="22" r="10" fill="#E4572E"/><rect x="45" y="60" width="110" height="90" rx="22" fill="#00A3A1"/><circle cx="78" cy="100" r="12" fill="#fff"/><circle cx="122" cy="100" r="12" fill="#fff"/><circle cx="80" cy="102" r="5" fill="#1B2A4A"/><circle cx="120" cy="102" r="5" fill="#1B2A4A"/><path d="M80 125q20 14 40 0" stroke="#fff" stroke-width="6" fill="none" stroke-linecap="round"/>` },
-  { id: 14, name: "Cerveau en fils", esprit: "Intelligence artificielle", style: "Contour", svg: `<g fill="none" stroke="#6C5CE7" stroke-width="7" stroke-linecap="round"><path d="M100 45c-30-15-55 5-50 30-25 10-20 45 0 52 0 25 30 35 50 20V45"/><path d="M100 45c30-15 55 5 50 30 25 10 20 45 0 52 0 25-30 35-50 20"/><path d="M70 90h20M110 110h20M75 125h15"/></g>` },
-  { id: 15, name: "Chaîne", esprit: "Communauté", style: "Contour", svg: `<g fill="none" stroke-width="12"><ellipse cx="80" cy="100" rx="40" ry="26" stroke="#1B2A4A"/><ellipse cx="120" cy="100" rx="40" ry="26" stroke="#00A3A1"/></g>` },
-  { id: 16, name: "Arbre du savoir", esprit: "Nature & croissance", style: "Plat", svg: `<path d="M100 170v-50" stroke="#2E7D32" stroke-width="10"/><circle cx="100" cy="85" r="50" fill="#2E7D32"/><circle cx="75" cy="70" r="12" fill="#F2B134"/><circle cx="120" cy="95" r="10" fill="#F2B134"/><circle cx="95" cy="110" r="8" fill="#F2B134"/>` },
-  { id: 17, name: "Graine qui pousse", esprit: "Nature & croissance", style: "Plat", svg: `<path d="M100 170v-80" stroke="#2E7D32" stroke-width="8"/><path d="M100 110c-40 0-45-40-45-55 40 0 45 25 45 55z" fill="#2ECC71"/><path d="M100 90c20-10 40-45 40-60-35 0-40 25-40 60z" fill="#00A3A1"/><ellipse cx="100" cy="172" rx="35" ry="8" fill="#1B2A4A" fill-opacity=".2"/>` },
-  { id: 18, name: "Soleil levant", esprit: "Nature & croissance", style: "Plat", svg: `<circle cx="100" cy="95" r="45" fill="#F2B134"/><g fill="#1B2A4A"><rect x="20" y="110" width="160" height="6"/><rect x="20" y="128" width="160" height="6"/><rect x="20" y="146" width="160" height="6"/></g>` },
-  { id: 19, name: "Spirale", esprit: "Abstrait & géométrique", style: "Contour", svg: `<path d="M100 100m0-10a10 10 0 1 1-10 10a20 20 0 1 1 20 20a30 30 0 1 1-30-30a40 40 0 1 1 40 40a50 50 0 1 1-50-50" fill="none" stroke="#6C5CE7" stroke-width="8"/>` },
-  { id: 20, name: "Formes Bauhaus", esprit: "Abstrait & géométrique", style: "Bauhaus", svg: `<rect x="20" y="20" width="160" height="160" fill="#FFF8EC"/><circle cx="70" cy="70" r="40" fill="#E4572E"/><rect x="110" y="110" width="70" height="70" fill="#1B2A4A"/><path d="M100 20l60 90H40z" fill="#F2B134"/>` },
-  { id: 21, name: "Losange vert", esprit: "Abstrait & géométrique", style: "Plat", svg: `<path d="M100 20l80 80-80 80-80-80z" fill="#2ECC71"/><text x="100" y="115" font-size="44" font-family="Arial Black,Arial" text-anchor="middle" fill="#fff">AI</text>` },
-  { id: 22, name: "Monogramme AI", esprit: "Abstrait & géométrique", style: "Typographique", svg: `<text x="100" y="125" font-size="90" font-family="Arial Black,Arial" text-anchor="middle" fill="#1B2A4A" letter-spacing="-4">A<tspan fill="#00A3A1">I</tspan></text><rect x="40" y="145" width="120" height="6" fill="#F2B134"/>` },
-  { id: 23, name: "Écusson", esprit: "Champion", style: "Emblème", svg: `<path d="M100 20l65 25v55c0 45-30 70-65 80-35-10-65-35-65-80V45z" fill="#1B2A4A"/><path d="M100 45l12 26 28 3-21 19 6 28-25-14-25 14 6-28-21-19 28-3z" fill="#F2B134"/>` },
-  { id: 24, name: "Néon", esprit: "Intelligence artificielle", style: "Néon", svg: `<defs><filter id="nn24" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs><rect width="200" height="200" fill="#0F0F1A"/><text x="100" y="62" font-size="34" font-family="Arial,sans-serif" text-anchor="middle" fill="#29F0FF" filter="url(#nn24)">AI</text><text x="100" y="125" font-size="40" font-family="Arial Black,Arial" text-anchor="middle" fill="none" stroke="#FF2D95" stroke-width="3" filter="url(#nn24)">CHAMP</text>` },
-  { id: 25, name: "Ruche", esprit: "Communauté", style: "Plat", svg: `<path d="M100 20l70 40v80l-70 40-70-40V60z" fill="#F2B134"/><path d="M100 55l40 23v46l-40 23-40-23V78z" fill="#1B2A4A"/><circle cx="100" cy="100" r="14" fill="#F2B134"/>` },
-  { id: 26, name: "Hibou sage", esprit: "Mascotte", style: "Mascotte illustrée", svg: `<path d="M55 70l20-35 25 20 25-20 20 35v60c0 25-20 40-45 40s-45-15-45-40z" fill="#8D6E63"/><circle cx="82" cy="100" r="18" fill="#fff"/><circle cx="118" cy="100" r="18" fill="#fff"/><circle cx="82" cy="100" r="8" fill="#1B2A4A"/><circle cx="118" cy="100" r="8" fill="#1B2A4A"/><path d="M92 125l8 12 8-12z" fill="#F2B134"/>` },
-  { id: 27, name: "Lion", esprit: "Champion", style: "Mascotte illustrée", svg: `<circle cx="100" cy="100" r="70" fill="#F2B134"/><circle cx="100" cy="105" r="45" fill="#E4572E"/><circle cx="85" cy="100" r="6" fill="#1B2A4A"/><circle cx="115" cy="100" r="6" fill="#1B2A4A"/><path d="M92 122h16l-8 8z" fill="#1B2A4A"/>` },
-  { id: 28, name: "Fourmi", esprit: "Communauté", style: "Pictogramme", svg: `<g fill="#1B2A4A"><circle cx="100" cy="60" r="20"/><circle cx="100" cy="100" r="28"/><circle cx="100" cy="150" r="22"/></g><g stroke="#1B2A4A" stroke-width="5" stroke-linecap="round"><path d="M80 90L50 75M120 90L150 75M80 110L45 120M120 110L155 120M80 60L55 45M120 60L145 45"/></g>` },
-  { id: 29, name: "Papillon", esprit: "Nature & croissance", style: "Plat", svg: `<g fill="#6C5CE7"><ellipse cx="65" cy="75" rx="45" ry="35" transform="rotate(-25 65 75)"/><ellipse cx="135" cy="75" rx="45" ry="35" transform="rotate(25 135 75)"/><ellipse cx="72" cy="128" rx="32" ry="24" transform="rotate(25 72 128)"/><ellipse cx="128" cy="128" rx="32" ry="24" transform="rotate(-25 128 128)"/></g><rect x="96" y="60" width="8" height="90" rx="4" fill="#1B2A4A"/>` },
-  { id: 30, name: "Cube", esprit: "Intelligence artificielle", style: "Isométrique", svg: `<path d="M100 30l60 35v70l-60 35-60-35V65z" fill="#00A3A1"/><path d="M100 30l60 35-60 35-60-35z" fill="#2EC4B6"/><path d="M100 100v70l60-35V65z" fill="#007F7D"/><text x="100" y="100" font-size="32" font-family="Arial Black,Arial" text-anchor="middle" fill="#fff">AI</text>` },
-  { id: 31, name: "Feu d'artifice", esprit: "Mouvement", style: "Plat", svg: `<g stroke-width="7" stroke-linecap="round"><path d="M100 100L100 40" stroke="#E4572E"/><path d="M100 100L150 60" stroke="#F2B134"/><path d="M100 100L160 110" stroke="#2ECC71"/><path d="M100 100L140 155" stroke="#29B6F6"/><path d="M100 100L60 155" stroke="#6C5CE7"/><path d="M100 100L40 110" stroke="#FF2D95"/><path d="M100 100L50 60" stroke="#00A3A1"/></g><circle cx="100" cy="100" r="10" fill="#1B2A4A"/>` },
-  { id: 32, name: "Escalier", esprit: "Mouvement", style: "Plat", svg: `<g fill="#1B2A4A"><rect x="30" y="140" width="34" height="30"/><rect x="66" y="115" width="34" height="55"/><rect x="102" y="90" width="34" height="80"/><rect x="138" y="60" width="34" height="110"/></g><path d="M45 110L100 60l55-40" fill="none" stroke="#F2B134" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>` },
-  { id: 33, name: "Pilule", esprit: "Abstrait & géométrique", style: "Plat", svg: `<rect x="20" y="65" width="160" height="70" rx="35" fill="#1B2A4A"/><text x="100" y="114" font-size="40" font-family="Arial Black,Arial" text-anchor="middle" fill="#F2B134">AI</text>` },
-  { id: 34, name: "Tampon", esprit: "Champion", style: "Tampon", svg: `<circle cx="100" cy="100" r="85" fill="none" stroke="#E4572E" stroke-width="6"/><circle cx="100" cy="100" r="60" fill="none" stroke="#E4572E" stroke-width="3"/><text x="100" y="95" font-size="36" font-family="Georgia,serif" text-anchor="middle" fill="#E4572E" font-weight="bold">AI</text><text x="100" y="130" font-size="16" font-family="Georgia,serif" text-anchor="middle" fill="#E4572E" letter-spacing="3">CHAMPIONS</text>` },
-  { id: 35, name: "Bulle de dialogue", esprit: "Communauté", style: "Plat", svg: `<path d="M30 45h140a10 10 0 0 1 10 10v70a10 10 0 0 1-10 10H95l-35 30v-30H30a10 10 0 0 1-10-10V55a10 10 0 0 1 10-10z" fill="#00A3A1"/><circle cx="70" cy="95" r="10" fill="#fff"/><circle cx="100" cy="95" r="10" fill="#fff"/><circle cx="130" cy="95" r="10" fill="#fff"/>` },
-  { id: 36, name: "Étincelles", esprit: "Idée & lumière", style: "Plat", svg: `<path d="M100 20c5 45 15 55 60 60-45 5-55 15-60 60-5-45-15-55-60-60 45-5 55-15 60-60z" fill="#F2B134"/><path d="M160 130c2 15 6 19 20 21-14 2-18 6-20 20-2-14-6-18-20-20 14-2 18-6 20-21z" fill="#E4572E"/>` },
-  { id: 37, name: "Boucle d'apprentissage", esprit: "Mouvement", style: "Plat", svg: `<path d="M150 100a50 50 0 1 1-15-36" fill="none" stroke="#1B2A4A" stroke-width="14" stroke-linecap="round"/><path d="M140 40l0 30 30-2z" fill="#1B2A4A"/><text x="100" y="112" font-size="40" font-family="Arial Black,Arial" text-anchor="middle" fill="#00A3A1">AI</text>` },
-  { id: 38, name: "Phare", esprit: "Idée & lumière", style: "Contour", svg: `<path d="M80 170l10-110h20l10 110z" fill="#fff" stroke="#1B2A4A" stroke-width="6"/><rect x="88" y="60" width="24" height="20" fill="#E4572E"/><path d="M88 60L100 35 112 60z" fill="#1B2A4A"/><path d="M90 40L40 20M110 40L160 20M90 45L30 50M110 45L170 50" stroke="#F2B134" stroke-width="5" stroke-linecap="round"/>` },
-  { id: 39, name: "Constellation", esprit: "Intelligence artificielle", style: "Contour", svg: `<rect width="200" height="200" fill="#0B1020"/><path d="M50 60L100 40L150 70L100 110L60 150L145 150L100 110" fill="none" stroke="#29F0FF" stroke-width="2"/><g fill="#fff"><circle cx="50" cy="60" r="4"/><circle cx="100" cy="40" r="6"/><circle cx="150" cy="70" r="4"/><circle cx="100" cy="110" r="5"/><circle cx="60" cy="150" r="4"/><circle cx="145" cy="150" r="6"/></g>` },
-  { id: 40, name: "Dessin à main levée", esprit: "Idée & lumière", style: "Dessin à main levée", svg: `<path d="M40 105c-5-35 30-62 62-58 36 4 58 32 54 62-4 34-33 52-64 48-30-4-50-28-52-52z" fill="none" stroke="#1B2A4A" stroke-width="6" stroke-linecap="round"/><text x="100" y="118" font-size="44" font-family="Georgia,serif" font-style="italic" text-anchor="middle" fill="#E4572E">ai!</text>` },
-  { id: 41, name: "Brutaliste", esprit: "Mouvement", style: "Brutaliste", svg: `<rect width="200" height="200" fill="#FFE600"/><rect x="20" y="20" width="160" height="70" fill="#000"/><text x="30" y="75" font-size="56" font-family="Arial Black,Arial" fill="#FFE600">AI</text><text x="30" y="165" font-size="34" font-family="Arial Black,Arial" fill="#000">CHAMP</text>` },
-  { id: 42, name: "Trait continu", esprit: "Champion", style: "Contour", svg: `<path d="M60 40h80v40a40 40 0 0 1-80 0z M60 60H40v10a20 20 0 0 0 20 20 M140 60h20v10a20 20 0 0 1-20 20 M100 120v25 M70 160h60" fill="none" stroke="#1B2A4A" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>` },
-  { id: 43, name: "Verre", esprit: "Intelligence artificielle", style: "Dégradé / verre", svg: `<defs><linearGradient id="lg43" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7F5AF0"/><stop offset="1" stop-color="#2CB67D"/></linearGradient></defs><rect width="200" height="200" rx="40" fill="url(#lg43)"/><circle cx="100" cy="100" r="55" fill="#fff" fill-opacity=".25" stroke="#fff" stroke-opacity=".6" stroke-width="2"/><text x="100" y="115" font-size="46" font-family="Arial,sans-serif" font-weight="bold" text-anchor="middle" fill="#fff">AI</text>` },
-  { id: 44, name: "Origami", esprit: "Abstrait & géométrique", style: "Origami", svg: `<path d="M100 25L165 150H35z" fill="#E4572E"/><path d="M100 25L165 150L100 130z" fill="#F28C6B"/><path d="M100 25L35 150L100 130z" fill="#C23B22"/><path d="M35 150L100 175L165 150L100 130z" fill="#8E2A18"/>` },
-  { id: 45, name: "Pictogrammes", esprit: "Communauté", style: "Pictogramme", svg: `<g fill="#1B2A4A"><circle cx="50" cy="75" r="14"/><path d="M30 165v-45a20 20 0 0 1 40 0v45z"/><circle cx="150" cy="75" r="14"/><path d="M130 165v-45a20 20 0 0 1 40 0v45z"/></g><g fill="#F2B134"><circle cx="100" cy="55" r="18"/><path d="M72 165v-65a28 28 0 0 1 56 0v65z"/></g>` },
-  { id: 46, name: "Engrenage", esprit: "Mouvement", style: "Monochrome", svg: `<circle cx="100" cy="100" r="55" fill="none" stroke="#1B2A4A" stroke-width="22" stroke-dasharray="14 10"/><circle cx="100" cy="100" r="42" fill="#1B2A4A"/><circle cx="100" cy="100" r="18" fill="#F2B134"/>` },
-  { id: 47, name: "Cœur", esprit: "Communauté", style: "Plat", svg: `<path d="M100 165C40 120 25 95 25 70a37 37 0 0 1 75-15 37 37 0 0 1 75 15c0 25-15 50-75 95z" fill="#E4572E"/><text x="100" y="105" font-size="30" font-family="Arial Black,Arial" text-anchor="middle" fill="#fff">AI</text>` },
-  { id: 48, name: "Flèche", esprit: "Mouvement", style: "Plat", svg: `<path d="M40 160L140 60" stroke="#00A3A1" stroke-width="14" stroke-linecap="round"/><path d="M100 40H160V100z" fill="#1B2A4A"/>` },
-  { id: 49, name: "Tangram", esprit: "Abstrait & géométrique", style: "Plat", svg: `<path d="M30 30h70v70z" fill="#00A3A1"/><path d="M100 100h70v70H100z" fill="#E4572E"/><path d="M30 100l70 70H30z" fill="#F2B134"/><path d="M100 30l70 35-70 35z" fill="#1B2A4A"/>` },
-  { id: 50, name: "Points", esprit: "Intelligence artificielle", style: "Monochrome", svg: `<g fill="#6C5CE7"><circle cx="55" cy="55" r="12"/><circle cx="100" cy="55" r="18"/><circle cx="145" cy="55" r="12"/><circle cx="55" cy="100" r="18"/><circle cx="100" cy="100" r="24"/><circle cx="145" cy="100" r="18"/><circle cx="55" cy="145" r="12"/><circle cx="100" cy="145" r="18"/><circle cx="145" cy="145" r="12"/></g>` },
-  { id: 51, name: "Vitrail", esprit: "Idée & lumière", style: "Vitrail", svg: `<path d="M30 30h70v70H30z" fill="#E4572E"/><path d="M100 30h70v70h-70z" fill="#F2B134"/><path d="M30 100h70v70H30z" fill="#6C5CE7"/><path d="M100 100h70v70h-70z" fill="#00A3A1"/><rect x="30" y="30" width="140" height="140" fill="none" stroke="#1B2A4A" stroke-width="6"/>` },
-  { id: 52, name: "Calligraphie", esprit: "Champion", style: "Calligraphie", svg: `<text x="100" y="125" font-size="90" font-family="Brush Script MT,cursive" font-style="italic" text-anchor="middle" fill="#1B2A4A">AI</text><path d="M30 150q70 20 140-5" stroke="#E4572E" stroke-width="5" fill="none" stroke-linecap="round"/>` },
-  { id: 53, name: "Tournesol", esprit: "Nature & croissance", style: "Plat", svg: `<g fill="#F2B134"><ellipse cx="100" cy="60" rx="14" ry="30"/><ellipse cx="100" cy="60" rx="14" ry="30" transform="rotate(45 100 100)"/><ellipse cx="100" cy="60" rx="14" ry="30" transform="rotate(90 100 100)"/><ellipse cx="100" cy="60" rx="14" ry="30" transform="rotate(135 100 100)"/><ellipse cx="100" cy="60" rx="14" ry="30" transform="rotate(180 100 100)"/><ellipse cx="100" cy="60" rx="14" ry="30" transform="rotate(225 100 100)"/><ellipse cx="100" cy="60" rx="14" ry="30" transform="rotate(270 100 100)"/><ellipse cx="100" cy="60" rx="14" ry="30" transform="rotate(315 100 100)"/></g><circle cx="100" cy="100" r="30" fill="#6B4226"/>` },
-  { id: 54, name: "Panneau", esprit: "Champion", style: "Typographique", svg: `<rect x="95" y="100" width="10" height="70" fill="#1B2A4A"/><rect x="25" y="30" width="150" height="80" rx="10" fill="#1B2A4A"/><rect x="35" y="40" width="130" height="60" rx="6" fill="none" stroke="#fff" stroke-width="3"/><text x="100" y="82" font-size="30" font-family="Arial Black,Arial" text-anchor="middle" fill="#fff">CHAMP</text>` },
-  { id: 55, name: "Éclair", esprit: "Mouvement", style: "Contour", svg: `<path d="M115 20L50 110h45l-10 70 70-95h-45z" fill="#F2B134" stroke="#1B2A4A" stroke-width="6" stroke-linejoin="round"/>` },
-  { id: 56, name: "Atome", esprit: "Intelligence artificielle", style: "Contour", svg: `<g fill="none" stroke="#6C5CE7" stroke-width="6"><ellipse cx="100" cy="100" rx="75" ry="28"/><ellipse cx="100" cy="100" rx="75" ry="28" transform="rotate(60 100 100)"/><ellipse cx="100" cy="100" rx="75" ry="28" transform="rotate(120 100 100)"/></g><circle cx="100" cy="100" r="16" fill="#E4572E"/>` },
-  { id: 57, name: "Clé à molette", esprit: "Mouvement", style: "Monochrome", svg: `<g transform="rotate(45 100 100)"><rect x="92" y="40" width="16" height="120" rx="8" fill="#1B2A4A"/><circle cx="100" cy="45" r="24" fill="#1B2A4A"/><rect x="88" y="30" width="24" height="18" fill="#fff"/></g>` },
-  { id: 58, name: "Pingouin", esprit: "Mascotte", style: "Mascotte illustrée", svg: `<ellipse cx="100" cy="110" rx="55" ry="70" fill="#1B2A4A"/><ellipse cx="100" cy="120" rx="35" ry="50" fill="#fff"/><circle cx="85" cy="75" r="9" fill="#fff"/><circle cx="115" cy="75" r="9" fill="#fff"/><circle cx="85" cy="76" r="4" fill="#1B2A4A"/><circle cx="115" cy="76" r="4" fill="#1B2A4A"/><path d="M90 92h20l-10 14z" fill="#F2B134"/>` },
-  { id: 59, name: "Dièse", esprit: "Communauté", style: "Plat", svg: `<rect x="30" y="30" width="140" height="140" rx="30" fill="#E4572E"/><path d="M80 55L70 145M130 55L120 145M55 85h95M50 115h95" stroke="#fff" stroke-width="10" stroke-linecap="round"/>` },
-  { id: 60, name: "Ruban de champion", esprit: "Champion", style: "Emblème", svg: `<path d="M60 130l-20 50 30-10 15 25 25-50z" fill="#007F7D"/><path d="M140 130l20 50-30-10-15 25-25-50z" fill="#007F7D"/><circle cx="100" cy="90" r="55" fill="#00A3A1"/><circle cx="100" cy="90" r="42" fill="none" stroke="#fff" stroke-width="4"/><text x="100" y="104" font-size="32" font-family="Arial Black,Arial" text-anchor="middle" fill="#fff">AI</text>` }
-];
+// Catalogue des propositions de logo « AI Champions LCL ».
+// Chaque entrée : id, name, esprit (l'idée), style, svg (contenu interne, viewBox 0 0 240 240).
+// Palette commune inspirée de l'univers LCL : bleu marine, bleu, cyan, or. À caler sur la charte officielle.
+const LOGOS = (function () {
+  const N = "#0B1F4B"; // bleu marine
+  const B = "#1F5BD8"; // bleu
+  const C = "#00A3E0"; // cyan
+  const Y = "#FFC72C"; // or
+  const W = "#FFFFFF";
+  const F = "Montserrat, 'Segoe UI', Arial, sans-serif";
+
+  const bg = (fill) => `<rect width="240" height="240" rx="28" fill="${fill}"/>`;
+  const light = bg("#FFFFFF");
+  const dark = bg(N);
+
+  // Étincelle à 4 branches (le symbole « IA »)
+  const sp = (cx, cy, r, fill) => {
+    const k = r * 0.16;
+    return `<path d="M${cx} ${cy - r}Q${cx + k} ${cy - k} ${cx + r} ${cy}Q${cx + k} ${cy + k} ${cx} ${cy + r}Q${cx - k} ${cy + k} ${cx - r} ${cy}Q${cx - k} ${cy - k} ${cx} ${cy - r}Z" fill="${fill}"/>`;
+  };
+  // Étoile à n branches
+  const st = (cx, cy, R, r, fill, n = 5) => {
+    const pts = [];
+    for (let i = 0; i < n * 2; i++) {
+      const a = (Math.PI / n) * i - Math.PI / 2;
+      const d = i % 2 ? r : R;
+      pts.push(`${(cx + d * Math.cos(a)).toFixed(1)},${(cy + d * Math.sin(a)).toFixed(1)}`);
+    }
+    return `<polygon points="${pts.join(" ")}" fill="${fill}"/>`;
+  };
+  const t = (x, y, size, weight, fill, txt, extra = "") =>
+    `<text x="${x}" y="${y}" text-anchor="middle" font-family="${F}" font-weight="${weight}" font-size="${size}" fill="${fill}" ${extra}>${txt}</text>`;
+
+  // Signatures typographiques
+  const wmA = (y, ink, acc) =>
+    t(120, y, 21, 800, ink, "AI CHAMPIONS", 'letter-spacing="0.5"') +
+    `<line x1="78" y1="${y + 13}" x2="98" y2="${y + 13}" stroke="${acc}" stroke-width="2"/>` +
+    `<line x1="142" y1="${y + 13}" x2="162" y2="${y + 13}" stroke="${acc}" stroke-width="2"/>` +
+    t(122, y + 18, 13, 700, acc, "LCL", 'letter-spacing="4"');
+  const tag = (y, fill, ink) =>
+    `<rect x="98" y="${y}" width="44" height="20" rx="5" fill="${fill}"/>` + t(120, y + 15, 13, 800, ink, "LCL", 'letter-spacing="1.5"');
+  const wmB = (y, ink, acc) => t(120, y, 17, 700, ink, "CHAMPIONS", 'letter-spacing="5"') + tag(y + 10, acc, N);
+
+  const L = [];
+  const add = (name, esprit, style, svg) => L.push({ id: L.length + 1, name, esprit, style, svg });
+
+  add("Étincelle", "IA", "Emblème", light +
+    `<circle cx="120" cy="88" r="52" fill="${N}"/>` + sp(120, 90, 32, Y) + sp(150, 60, 10, C) + wmA(178, N, B));
+
+  add("Trophée connecté", "Champion", "Plat", light +
+    `<path d="M88 46H152V76A32 32 0 0 1 88 76Z" fill="${N}"/>` +
+    `<g fill="none" stroke="${N}" stroke-width="5" stroke-linejoin="round"><path d="M88 56H70V78L82 90"/><path d="M152 56H170V78L158 90"/></g>` +
+    `<circle cx="82" cy="90" r="6" fill="${C}"/><circle cx="158" cy="90" r="6" fill="${C}"/>` +
+    `<rect x="113" y="107" width="14" height="16" fill="${N}"/><rect x="94" y="123" width="52" height="11" rx="3" fill="${N}"/>` +
+    sp(120, 72, 16, Y) + wmA(172, N, B));
+
+  add("Couronne neuronale", "Champion", "Sombre", dark +
+    `<polygon points="68,112 68,70 94,92 120,54 146,92 172,70 172,112" fill="${Y}"/>` +
+    `<rect x="68" y="112" width="104" height="14" rx="3" fill="${W}"/>` +
+    [[68, 70], [120, 54], [172, 70]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="9" fill="${C}" stroke="${N}" stroke-width="3"/>`).join("") +
+    wmA(176, W, Y));
+
+  add("Blason AI", "Champion", "Écusson", light +
+    `<path d="M120 22L170 38V88C170 122 148 144 120 154C92 144 70 122 70 88V38Z" fill="${N}"/>` +
+    `<path d="M120 32L160 45V88C160 115 143 133 120 142C97 133 80 115 80 88V45Z" fill="none" stroke="${Y}" stroke-width="2.5"/>` +
+    st(120, 58, 9, 4, Y) + t(120, 114, 44, 800, W, "AI") + wmB(186, N, Y));
+
+  add("Laurier de données", "Champion", "Graphique", light +
+    (function () {
+      let s = "";
+      for (let i = 0; i < 8; i++) {
+        const a = ((115 + i * 17) * Math.PI) / 180;
+        const r = 9 - i * 0.7;
+        const col = i % 2 ? C : B;
+        s += `<circle cx="${(120 + 54 * Math.cos(a)).toFixed(1)}" cy="${(90 - 54 * Math.sin(a)).toFixed(1)}" r="${r.toFixed(1)}" fill="${col}"/>`;
+        s += `<circle cx="${(120 - 54 * Math.cos(a)).toFixed(1)}" cy="${(90 - 54 * Math.sin(a)).toFixed(1)}" r="${r.toFixed(1)}" fill="${col}"/>`;
+      }
+      return s;
+    })() + t(120, 104, 40, 800, N, "AI") + sp(120, 46, 9, Y) + wmA(182, N, B));
+
+  add("Médaille", "Champion", "Plat", light +
+    `<polygon points="96,24 118,24 132,66 110,66" fill="${B}"/><polygon points="144,24 122,24 108,66 130,66" fill="${C}"/>` +
+    `<circle cx="120" cy="100" r="40" fill="${Y}"/><circle cx="120" cy="100" r="31" fill="none" stroke="${W}" stroke-width="2.5"/>` +
+    sp(120, 100, 19, N) + wmA(178, N, B));
+
+  add("Sceau", "Champion", "Cachet", bg("#FFFFFF") +
+    `<circle cx="120" cy="120" r="104" fill="${N}"/><circle cx="120" cy="120" r="64" fill="none" stroke="${Y}" stroke-width="2"/>` +
+    `<defs><path id="sTop7" d="M40 120A80 80 0 0 1 200 120"/><path id="sBot7" d="M30 120A90 90 0 0 0 210 120"/></defs>` +
+    `<text font-family="${F}" font-weight="800" font-size="18" letter-spacing="4" fill="${W}" text-anchor="middle"><textPath href="#sTop7" startOffset="50%">AI CHAMPIONS</textPath></text>` +
+    `<text font-family="${F}" font-weight="700" font-size="15" letter-spacing="6" fill="${Y}" text-anchor="middle"><textPath href="#sBot7" startOffset="50%">LCL</textPath></text>` +
+    st(36, 128, 6, 2.5, Y) + st(204, 128, 6, 2.5, Y) + sp(120, 120, 40, Y) + sp(146, 94, 9, C));
+
+  add("Sommet A", "Progression", "Monogramme", light +
+    `<polygon points="120,46 170,152 144,152 120,98 96,152 70,152" fill="${N}"/>` +
+    `<rect x="92" y="126" width="56" height="10" rx="5" fill="${C}"/>` + sp(120, 34, 16, Y) + wmA(186, N, B));
+
+  add("Podium", "Champion", "Plat", light +
+    `<rect x="70" y="96" width="32" height="44" rx="3" fill="${B}"/><rect x="104" y="76" width="32" height="64" rx="3" fill="${N}"/><rect x="138" y="108" width="32" height="32" rx="3" fill="${C}"/>` +
+    t(86, 124, 16, 800, W, "2") + t(120, 108, 18, 800, Y, "1") + t(154, 130, 14, 800, W, "3") +
+    sp(120, 52, 18, Y) + wmA(176, N, B));
+
+  add("Galons", "Progression", "Géométrique", light +
+    `<g fill="none" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"><path d="M80 138L120 110L160 138" stroke="${N}"/><path d="M80 110L120 82L160 110" stroke="${B}"/><path d="M80 82L120 54L160 82" stroke="${C}"/></g>` +
+    sp(120, 30, 14, Y) + wmA(182, N, B));
+
+  add("Bulle étincelante", "IA générative", "Plat", light +
+    `<rect x="66" y="40" width="108" height="80" rx="24" fill="${N}"/><polygon points="90,116 88,144 116,118" fill="${N}"/>` +
+    sp(120, 80, 24, Y) + sp(150, 60, 8, C) + wmA(178, N, B));
+
+  add("Flambeau", "Champion", "Sombre", dark +
+    `<path d="M120 34C142 60 154 78 148 100C144 116 132 124 120 124C107 124 95 116 93 100C91 86 101 78 107 68C109 80 115 85 120 85C118 68 113 54 120 34Z" fill="${Y}"/>` +
+    `<path d="M120 76C130 90 134 98 131 106C129 114 124 118 120 118C115 118 110 114 109 106C108 98 114 92 120 76Z" fill="${C}"/>` +
+    `<polygon points="102,128 138,128 130,158 110,158" fill="${W}"/>` + wmA(190, W, Y));
+
+  add("Réseau hexagonal", "IA", "Graphique", light +
+    (function () {
+      let lines = "", nodes = "", pts = [];
+      for (let i = 0; i < 6; i++) {
+        const a = (Math.PI / 3) * i - Math.PI / 2;
+        pts.push([120 + 52 * Math.cos(a), 92 + 52 * Math.sin(a)]);
+      }
+      pts.forEach(([x, y]) => {
+        lines += `<line x1="120" y1="92" x2="${x.toFixed(1)}" y2="${y.toFixed(1)}" stroke="${B}" stroke-width="3"/>`;
+        nodes += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="8" fill="${C}"/>`;
+      });
+      return `<polygon points="${pts.map((p) => p.map((v) => v.toFixed(1)).join(",")).join(" ")}" fill="none" stroke="${N}" stroke-width="7" stroke-linejoin="round"/>` + lines + nodes + `<circle cx="120" cy="92" r="15" fill="${Y}"/>`;
+    })() + wmA(182, N, B));
+
+  add("Trophée 8-bit", "Jeu", "Pixel", dark +
+    (function () {
+      const rows = ["X.XXXXXX.X", "XXXXXXXXXX", "X.XXXXXX.X", ".XXXXXXXX.", "..XXXXXX..", "...XXXX...", "....XX....", "....XX....", "..XXXXXX..", "..XXXXXX.."];
+      let s = "";
+      rows.forEach((r, y) => [...r].forEach((c, x) => { if (c === "X") s += `<rect x="${80 + x * 8}" y="${36 + y * 9}" width="8" height="9" fill="${y < 6 ? Y : W}"/>`; }));
+      return s + `<rect x="112" y="45" width="8" height="9" fill="${C}"/><rect x="120" y="45" width="8" height="9" fill="${C}"/>`;
+    })() + t(120, 168, 22, 800, W, "AI CHAMPIONS", 'letter-spacing="1"') + tag(180, Y, N));
+
+  add("Constellation", "IA", "Sombre", dark +
+    (function () {
+      const p = [[72, 116], [86, 70], [104, 96], [120, 48], [136, 96], [154, 70], [168, 116]];
+      let s = `<polyline points="${p.map((q) => q.join(",")).join(" ")}" fill="none" stroke="${C}" stroke-width="2" stroke-opacity=".8"/><line x1="72" y1="116" x2="168" y2="116" stroke="${C}" stroke-width="2" stroke-opacity=".8"/>`;
+      p.forEach(([x, y], i) => { if (i !== 3) s += `<circle cx="${x}" cy="${y}" r="${i % 2 ? 5 : 4}" fill="${W}"/>`; });
+      return s + sp(120, 48, 16, Y) + `<circle cx="60" cy="40" r="1.6" fill="${W}"/><circle cx="184" cy="52" r="1.6" fill="${W}"/><circle cx="196" cy="102" r="1.2" fill="${W}"/><circle cx="46" cy="92" r="1.2" fill="${W}"/>`;
+    })() + wmA(172, W, Y));
+
+  add("Monogramme carré", "Marque", "Monogramme", light +
+    `<rect x="70" y="30" width="100" height="100" rx="26" fill="${N}"/>` + t(118, 100, 50, 800, W, "AI") + sp(152, 52, 11, Y) + wmB(166, N, Y));
+
+  add("Cible atteinte", "Performance", "Plat", light +
+    `<circle cx="112" cy="94" r="54" fill="${N}"/><circle cx="112" cy="94" r="40" fill="${W}"/><circle cx="112" cy="94" r="27" fill="${B}"/><circle cx="112" cy="94" r="13" fill="${Y}"/>` +
+    `<line x1="112" y1="94" x2="166" y2="40" stroke="${N}" stroke-width="6" stroke-linecap="round"/><polygon points="160,30 176,30 176,46 168,38" fill="${C}"/>` + wmA(182, N, B));
+
+  add("Fusée", "Innovation", "Plat", light +
+    `<path d="M120 30C140 46 148 74 144 108H96C92 74 100 46 120 30Z" fill="${N}"/><circle cx="120" cy="70" r="12" fill="${C}" stroke="${W}" stroke-width="3"/>` +
+    `<path d="M96 96L78 118V130L98 116Z" fill="${B}"/><path d="M144 96L162 118V130L142 116Z" fill="${B}"/>` +
+    `<path d="M104 112H136L128 140L120 128L112 140Z" fill="${Y}"/>` + wmA(180, N, B));
+
+  add("Bande signature", "Marque", "Typographique", dark +
+    `<polygon points="0,150 240,104 240,126 0,172" fill="${Y}"/>` + t(120, 118, 92, 800, W, "AI", 'letter-spacing="-2"') +
+    sp(178, 46, 12, C) + t(120, 206, 19, 700, W, "CHAMPIONS", 'letter-spacing="6"') + t(120, 226, 12, 700, Y, "LCL", 'letter-spacing="5"'));
+
+  add("Étoile filante", "Ambition", "Dynamique", light +
+    `<g stroke-linecap="round" stroke-width="8"><line x1="62" y1="132" x2="126" y2="96" stroke="${C}"/><line x1="76" y1="148" x2="132" y2="116" stroke="${B}"/><line x1="96" y1="156" x2="140" y2="130" stroke="${N}"/></g>` +
+    st(152, 86, 30, 13, Y) + wmA(188, N, B));
+
+  add("Anneau", "IA", "Minimal", light +
+    `<path d="M104 38A54 54 0 1 0 136 38" fill="none" stroke="${N}" stroke-width="7" stroke-linecap="round"/>` +
+    sp(120, 36, 15, Y) + t(120, 106, 34, 800, N, "AI") + wmA(182, N, B));
+
+  add("Puce couronnée", "IA", "Technique", light +
+    (function () {
+      let pins = "";
+      [96, 120, 144].forEach((v) => {
+        pins += `<line x1="${v}" y1="40" x2="${v}" y2="54" stroke="${B}" stroke-width="5" stroke-linecap="round"/><line x1="${v}" y1="130" x2="${v}" y2="144" stroke="${B}" stroke-width="5" stroke-linecap="round"/>`;
+        const w = v - 28;
+        pins += `<line x1="62" y1="${w + 20}" x2="76" y2="${w + 20}" stroke="${B}" stroke-width="5" stroke-linecap="round"/><line x1="164" y1="${w + 20}" x2="178" y2="${w + 20}" stroke="${B}" stroke-width="5" stroke-linecap="round"/>`;
+      });
+      return pins;
+    })() + `<rect x="76" y="54" width="88" height="76" rx="14" fill="${N}"/>` +
+    `<polygon points="96,108 96,80 108,92 120,72 132,92 144,80 144,108" fill="${Y}"/>` + wmA(182, N, B));
+
+  add("Ampoule", "Idée", "Plat", light +
+    `<circle cx="120" cy="78" r="40" fill="${Y}"/><path d="M100 104H140L134 122H106Z" fill="${Y}"/>` +
+    `<rect x="104" y="124" width="32" height="8" rx="3" fill="${N}"/><rect x="108" y="135" width="24" height="8" rx="3" fill="${N}"/>` +
+    sp(120, 78, 22, N) + wmA(180, N, B));
+
+  add("Écusson sport", "Esprit d'équipe", "Écusson", light +
+    `<path d="M70 30H170V100C170 132 148 152 120 164C92 152 70 132 70 100Z" fill="${N}"/>` +
+    `<path d="M70 30H170V58H70Z" fill="${B}"/>` + t(120, 50, 13, 800, W, "LCL", 'letter-spacing="4"') +
+    st(120, 98, 24, 10, Y) +
+    `<path d="M56 116H184L176 130L184 144H56L64 130Z" fill="${Y}"/>` + t(120, 135, 13, 800, N, "AI CHAMPIONS", 'letter-spacing="1"') + st(100, 192, 6, 2.5, B) + st(120, 192, 6, 2.5, B) + st(140, 192, 6, 2.5, B));
+
+  add("Typo pure", "Marque", "Typographique", light +
+    t(120, 112, 84, 800, N, "AI", 'letter-spacing="-3"') + `<rect x="78" y="126" width="84" height="8" rx="4" fill="${Y}"/>` +
+    sp(170, 50, 11, C) + t(120, 166, 19, 700, N, "CHAMPIONS", 'letter-spacing="6"') + t(120, 192, 13, 700, B, "LCL", 'letter-spacing="5"'));
+
+  add("Robot couronné", "Mascotte", "Plat", light +
+    `<polygon points="94,50 94,30 107,40 120,24 133,40 146,30 146,50" fill="${Y}"/>` +
+    `<rect x="78" y="54" width="84" height="70" rx="20" fill="${N}"/>` +
+    `<circle cx="102" cy="86" r="10" fill="${C}"/><circle cx="138" cy="86" r="10" fill="${C}"/>` +
+    `<path d="M104 106Q120 116 136 106" fill="none" stroke="${W}" stroke-width="4" stroke-linecap="round"/>` +
+    `<rect x="68" y="78" width="10" height="20" rx="4" fill="${B}"/><rect x="162" y="78" width="10" height="20" rx="4" fill="${B}"/>` + wmA(170, N, B));
+
+  add("Cercle d'équipe", "Communauté", "Graphique", light +
+    (function () {
+      let s = "";
+      for (let i = 0; i < 6; i++) {
+        const a = (Math.PI / 3) * i - Math.PI / 2;
+        const x = 120 + 48 * Math.cos(a), y = 90 + 48 * Math.sin(a);
+        s += `<circle cx="${x.toFixed(1)}" cy="${(y - 6).toFixed(1)}" r="8" fill="${i % 2 ? C : B}"/><path d="M${(x - 12).toFixed(1)} ${(y + 12).toFixed(1)}A12 12 0 0 1 ${(x + 12).toFixed(1)} ${(y + 12).toFixed(1)}Z" fill="${i % 2 ? C : B}"/>`;
+      }
+      return s;
+    })() + `<circle cx="120" cy="90" r="26" fill="${N}"/>` + sp(120, 90, 16, Y) + wmA(180, N, B));
+
+  add("Bannière", "Champion", "Écusson", light + '<g transform="translate(0,14)">' +
+    st(92, 62, 12, 5, Y) + st(120, 52, 16, 6.5, Y) + st(148, 62, 12, 5, Y) +
+    `<polygon points="30,96 58,96 58,128 30,128 40,112" fill="${B}"/><polygon points="210,96 182,96 182,128 210,128 200,112" fill="${B}"/>` +
+    `<rect x="44" y="86" width="152" height="38" fill="${N}"/>` + t(120, 111, 16, 800, W, "AI CHAMPIONS", 'letter-spacing="0.3"') +
+    tag(140, Y, N) + "</g>");
+
+  add("Losange", "IA", "Dégradé", light +
+    `<defs><linearGradient id="g29" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${B}"/><stop offset="1" stop-color="${C}"/></linearGradient></defs>` +
+    `<rect x="78" y="44" width="84" height="84" rx="16" fill="url(#g29)" transform="rotate(45 120 86)"/>` + sp(120, 86, 26, W) + sp(144, 62, 7, Y) + wmA(182, N, B));
+
+  add("Boucle infinie", "Apprentissage", "Dégradé", light +
+    `<defs><linearGradient id="g30" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="${N}"/><stop offset="1" stop-color="${C}"/></linearGradient></defs>` +
+    `<path d="M120 90C104 66 66 62 66 90S104 114 120 90S174 62 174 90S136 114 120 90Z" fill="none" stroke="url(#g30)" stroke-width="13" stroke-linejoin="round"/>` +
+    sp(120, 90, 15, Y) + wmA(172, N, B));
+
+  add("Éclair", "Énergie", "Emblème", dark +
+    `<circle cx="120" cy="88" r="56" fill="${B}"/><polygon points="128,40 92,96 116,96 108,138 148,78 124,78" fill="${Y}"/>` + sp(160, 50, 9, C) + wmA(184, W, Y));
+
+  add("Boussole", "Cap", "Emblème", light +
+    `<circle cx="120" cy="88" r="54" fill="${N}"/><circle cx="120" cy="88" r="44" fill="none" stroke="${C}" stroke-width="2" stroke-dasharray="3 6"/>` +
+    `<polygon points="120,44 132,88 120,96 108,88" fill="${Y}"/><polygon points="120,132 108,88 120,80 132,88" fill="${W}"/><circle cx="120" cy="88" r="5" fill="${N}"/>` + wmA(180, N, B));
+
+  return L;
+})();
