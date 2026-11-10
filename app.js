@@ -22,7 +22,9 @@
   };
 
   // ---------- Catalogue : identités du site + propositions des joueurs ----------
-  const items = new Map(LOGOS.map((l) => [l.id, l]));
+  // Identités en compétition : 20 propositions de la série « charte LCL » (à garder alignée avec server/lib/shared.js).
+  const ACTIVE = [33, 34, 35, 36, 37, 40, 41, 42, 43, 45, 46, 47, 48, 49, 50, 51, 53, 54, 55, 56];
+  const items = new Map(LOGOS_LCL.filter((l) => ACTIVE.includes(l.id)).map((l) => [l.id, l]));
   let played = {};
   const asItem = (p) => ({ id: p.id, name: p.name, by: p.by, img: `${API}/img?id=${p.id}` });
   async function loadCatalog() {

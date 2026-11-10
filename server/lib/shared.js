@@ -1,5 +1,7 @@
 // Outils communs : accès Redis (API REST Upstash), CORS, propositions, classement.
-export const BUILTIN_COUNT = 32; // identités 1 à 32 fournies par le site
+// Identités du site actuellement en compétition (série « charte LCL »).
+// Les duels sur des identités retirées ne comptent plus dans le classement.
+export const ACTIVE_BUILTIN = [33, 34, 35, 36, 37, 40, 41, 42, 43, 45, 46, 47, 48, 49, 50, 51, 53, 54, 55, 56];
 export const MAX_PROPOSALS_PER_PSEUDO = 3;
 export const MAX_IMAGE_BYTES = 350 * 1024;
 
@@ -79,7 +81,7 @@ export const publicProposal = (p) => ({ id: p.id, name: p.name, by: p.by });
 
 export async function validIds() {
   const ids = new Set();
-  for (let i = 1; i <= BUILTIN_COUNT; i++) ids.add(i);
+  for (const i of ACTIVE_BUILTIN) ids.add(i);
   for (const p of await allProposals()) ids.add(p.id);
   return ids;
 }
@@ -90,8 +92,9 @@ export async function validIds() {
 export function stats(games, ids) {
   const wins = new Map(), played = new Map(), champions = new Map(), pair = new Map();
   const inc = (m, k) => m.set(k, (m.get(k) || 0) + 1);
-  let duels = 0;
+  let duels = 0, players = 0;
   for (const g of games) {
+    let counted = false;
     if (ids.has(g.champion)) inc(champions, g.champion);
     for (const [a, b, w] of g.duels || []) {
       if (!ids.has(a) || !ids.has(b)) continue; // proposition retirée
@@ -100,9 +103,11 @@ export function stats(games, ids) {
       inc(played, b);
       inc(pair, a < b ? `${a}-${b}` : `${b}-${a}`);
       duels += 1;
+      counted = true;
     }
+    if (counted) players += 1;
   }
-  return { wins, played, champions, pair, duels };
+  return { wins, played, champions, pair, duels, players };
 }
 
 export function ranking(games, ids) {
@@ -128,5 +133,5 @@ export function ranking(games, ids) {
   }));
   rows.sort((x, y) => y.score - x.score || y.champion - x.champion || y.wins - x.wins);
   rows.forEach((r, i) => (r.rank = i + 1));
-  return { players: games.length, duels: s.duels, ranked: rows.length, top: rows.slice(0, 5), all: rows };
+  return { players: s.players, duels: s.duels, ranked: rows.length, top: rows.slice(0, 5), all: rows };
 }
