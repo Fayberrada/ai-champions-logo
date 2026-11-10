@@ -81,7 +81,7 @@
     if (takePseudo()) start();
   });
   $("#to-propose").addEventListener("click", () => {
-    if (takePseudo()) show("propose");
+    if (takePseudo()) { backTo = "home"; show("propose"); }
   });
 
   // ---------- Proposer un logo ----------
@@ -176,7 +176,9 @@
       btn.disabled = false;
     }
   });
-  $("#prop-back").addEventListener("click", () => { setStatus(""); show("home"); });
+  let backTo = "home";
+  $("#prop-back").addEventListener("click", () => { setStatus(""); show(backTo); });
+  $("#results-propose").addEventListener("click", () => { backTo = "results"; setStatus(""); show("propose"); });
 
   // ---------- Tournoi ----------
   let g = null;
